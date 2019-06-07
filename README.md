@@ -1,2 +1,2 @@
 # DeteX_telemetry
-Code for ELE400 project
+Code for ELE400 project.
