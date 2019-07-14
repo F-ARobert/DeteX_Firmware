@@ -1,6 +1,11 @@
 #include "AZ3166WiFi.h"
 #include "DevKitMQTTClient.h"
 #include "AzureIotHub.h"
+#include "SystemTickCounter.h"
+#include "wiring.h"
+
+
+#include"detex_sensor.h"
 
 
 static bool hasWifi = false;
@@ -12,10 +17,18 @@ typedef struct telemetry_data {
     float humidity;
     float pressure;
     float mag_field;
-} telemetry_data;
+}telemetry_data;
+
+telemetry_data t_data;
+
+char line1[20];
 
 void setup() {
   // put your setup code here, to run once:
+
+  /* Sensor intialization */
+  init_onboard_temp_sensor();
+
   if (WiFi.begin() == WL_CONNECTED)
   {
     hasWifi = true;
@@ -37,7 +50,20 @@ void setup() {
 
 void loop() {
   // put your main code here, to run repeatedly:
-  if (hasIoTHub && hasWifi)
+
+  Screen.print(1,"Fetching temp", true);
+
+  delay(2000);
+
+  t_data.temperature = read_temperature();
+
+  Screen.print(1, "Temprature :",false);
+  sprintf(line1, "%f Celsius", t_data.temperature);
+  Screen.print(2,line1,false);
+
+  delay(5000);
+
+  /*if (hasIoTHub && hasWifi)
   {
     char buff[128];
 
@@ -45,3 +71,5 @@ void loop() {
     snprintf(buff, 128, "{\"topic\":\"iot\"}");
     
     if (DevKitMQTTClient_SendEvent(buff))
+  }*/
+}
