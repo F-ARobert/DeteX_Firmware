@@ -16,18 +16,20 @@ typedef struct telemetry_data {
     float temperature;
     float humidity;
     float pressure;
-    float mag_field;
+    int16_t mag_field;
 }telemetry_data;
 
 telemetry_data t_data;
 
 char line1[20];
+char line2[20];
+char line3[20];
 
 void setup() {
   // put your setup code here, to run once:
 
   /* Sensor intialization */
-  init_onboard_temp_sensor();
+  init_onboard_sensors();
 
   if (WiFi.begin() == WL_CONNECTED)
   {
@@ -50,19 +52,31 @@ void setup() {
 
 void loop() {
   // put your main code here, to run repeatedly:
+  Screen.clean();
+  Screen.print(1,"Fetching data", true);
 
-  Screen.print(1,"Fetching temp", true);
+  t_data.temperature = read_temperature();
+  t_data.humidity = read_humidity();
+  t_data.pressure = read_pressure();
+  t_data.mag_field = read_magnetic();
 
   delay(2000);
 
-  t_data.temperature = read_temperature();
+  sprintf(line1, "%.2f Celsius", t_data.temperature);
+  sprintf(line2,"%.2f %",t_data.humidity);
 
-  Screen.print(1, "Temprature :",false);
-  sprintf(line1, "%f Celsius", t_data.temperature);
-  Screen.print(2,line1,false);
+  Screen.print(1,line1,false);
+  Screen.print(2,line2,false);
+  
+  delay(2000);
 
-  delay(5000);
+  sprintf(line1, "%.2f Pa", t_data.pressure);
+  sprintf(line2,"%.2d %",t_data.mag_field);
 
+  Screen.print(1,line1,false);
+  Screen.print(2,line2,false);
+
+  delay(2000);
   /*if (hasIoTHub && hasWifi)
   {
     char buff[128];

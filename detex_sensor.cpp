@@ -18,7 +18,7 @@ static RGB_LED rgbLed;
 static float humidity;
 static float temperature;
 static float pressure;
-static int16_t mag_field;
+static int mag_field;
 
 
 /* Temeprature and humidity *****************/
@@ -65,8 +65,6 @@ float read_humidity(void){
 
 /* Pressure *******************************/
 float read_pressure(void){
-    pressure_sensor->reset();
-
     float pressure = 0;
     pressure_sensor->getPressure(&pressure);
 
@@ -74,10 +72,8 @@ float read_pressure(void){
 }
 
 /* Magnetometer *************************/
-int16_t read_magnetic(void){
-    mag_sensor->reset();
-
-    int16_t mag_field = 0;
+int read_magnetic(void){
+    int mag_field = 0;
     mag_sensor->getMAxes(&mag_field);
 
     return mag_field;
