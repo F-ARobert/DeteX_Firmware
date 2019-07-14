@@ -1,8 +1,18 @@
 #include "AZ3166WiFi.h"
 #include "DevKitMQTTClient.h"
+#include "AzureIotHub.h"
+
 
 static bool hasWifi = false;
 static bool hasIoTHub = false;
+
+/* Variables *****************************************/
+typedef struct telemetry_data {
+    float temperature;
+    float humidity;
+    float pressure;
+    float mag_field;
+} telemetry_data;
 
 void setup() {
   // put your setup code here, to run once:
@@ -35,13 +45,3 @@ void loop() {
     snprintf(buff, 128, "{\"topic\":\"iot\"}");
     
     if (DevKitMQTTClient_SendEvent(buff))
-    {
-      Screen.print(1, "Sending...");
-    }
-    else
-    {
-      Screen.print(1, "Failure...");
-    }
-    // delay(2000);
-  }
-}
