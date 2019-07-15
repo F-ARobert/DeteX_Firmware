@@ -162,7 +162,7 @@ void loop() {
   delay(2000);
 
   sprintf(line1, "%.2f Celsius", t_data.temperature);
-  sprintf(line2,"%.2f %",t_data.humidity);
+  sprintf(line2,"%.2f '%'",t_data.humidity);
 
   Screen.print(1,line1,false);
   Screen.print(2,line2,false);
