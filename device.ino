@@ -22,6 +22,7 @@ void setup() {
   /* Sensor intialization */
   init_onboard_sensors();
   telemetry_table_t tele_tab = telemetry_init();
+  telemetry_data_t t_data;
 
   /* Initialize interrupt timers */
   Timer sensor_timer;
@@ -51,7 +52,7 @@ void setup() {
     hasWifi = false;
     Screen.print(1, "No Wi-Fi");
   }
-  sensor_timer.start();
+  //sensor_timer.start();
 }
 
 void loop() {
@@ -63,13 +64,15 @@ void loop() {
     read_sensors();
   }
 
-  if (t_data)
+  if (tele_tab.count == 12){
+    t_data.temperature = tele_tab.sum_temperature/telet_tab.count;
+    t_data.humidity = tele_tab.sum_humidity/telet_tab.count;
+    t_data.pressure = tele_tab.sum_humidity/telet_tab.count;
+    t_data.mag_field = tele_tab.sum_magnetic/telet_tab.count;
+  }
   
 
-  t_data.temperature = read_temperature();
-  t_data.humidity = read_humidity();
-  t_data.pressure = read_pressure();
-  t_data.mag_field = read_magnetic();
+
 
   delay(2000);
 
