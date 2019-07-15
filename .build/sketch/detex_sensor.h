@@ -3,7 +3,7 @@
 Included features are:
     - Initialisation of sensors
     - Communication with sensors
-    - Read commands
+    - Read sensors
 
 Made by DeteX
 */
