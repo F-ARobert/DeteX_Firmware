@@ -49,22 +49,22 @@ int8_t calc_average(telemetry_data_t *ptr_data, telemetry_table_t *ptr_table){
 }
 
 /* Read sensors ***************************/
-void read_sensors(void){
+void read_sensors(telemetry_table_t *tele_tab){
     float pressure = read_pressure();
     float temperature = read_temperature();
     float humidity = read_humidity();
     int32_t mag_field = read_magnetic();
 
 
-    tele_tab.humidity_table[tele_tab.count] = humidity;
-    tele_tab.temperature_table[tele_tab.count] = temperature;
-    tele_tab.pressure_table[tele_tab.count] = pressure;
-    tele_tab.magnetic_table[tele_tab.count] = mag_field;
+    tele_tab->humidity_table[tele_tab->count] = humidity;
+    tele_tab->temperature_table[tele_tab->count] = temperature;
+    tele_tab->pressure_table[tele_tab->count] = pressure;
+    tele_tab->magnetic_table[tele_tab->count] = mag_field;
 
-    tele_tab.sum_humidity += humidity;
-    tele_tab.sum_magnetic += mag_field;
-    tele_tab.sum_pressure += pressure;
-    tele_tab.sum_temperature += temperature;
+    tele_tab->sum_humidity += humidity;
+    tele_tab->sum_magnetic += mag_field;
+    tele_tab->sum_pressure += pressure;
+    tele_tab->sum_temperature += temperature;
 }
 
 

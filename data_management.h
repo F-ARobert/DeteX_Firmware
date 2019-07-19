@@ -57,7 +57,7 @@ telemetry_table_t telemetry_init(void);
 int8_t calc_average(telemetry_data_t *ptr_data, telemetry_table_t *ptr_table);
 
 /* Reads all telemetry sensors ************/
-void read_sensors(void);
+void read_sensors(telemetry_table_t *tele_tab);
 
 
 

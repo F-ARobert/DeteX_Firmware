@@ -13,28 +13,29 @@ static bool hasWifi = false;
 static bool hasIoTHub = false;
 
 
+/* Global variable ****************************/
+telemetry_table_t tele_tab;
+telemetry_data_t t_data;
+
+/* Initialize timers */
+Timer sensor_timer;
+Timer lidar_timer;
+Timer timing;
+
+/* Test variables */
 char line1[20];
 char line2[20];
 char line3[20];
+char line4[20];
+bool sensor_flag = true; 
+
 
 void setup() {
   
   /* Sensor intialization */
   init_onboard_sensors();
-  telemetry_table_t tele_tab = telemetry_init();
-  telemetry_data_t t_data;
-
-  /* Initialize interrupt timers */
-  Timer sensor_timer;
-  Timer lidar_timer;
-
-  /* interrupt flags */
-  bool pool_sensors = false;
-
-  /* Attach */
-  sensor_timer.initialize(5000);
-  sensor_timer.attachInterrupt(read_sensors());
-
+  tele_tab = telemetry_init();
+  
   if (WiFi.begin() == WL_CONNECTED)
   {
     hasWifi = true;
@@ -52,45 +53,49 @@ void setup() {
     hasWifi = false;
     Screen.print(1, "No Wi-Fi");
   }
-  //sensor_timer.start();
+  sensor_timer.start();
+  lidar_timer.start();
+  timing.start();
 }
 
 void loop() {
   // put your main code here, to run repeatedly:
-  Screen.clean();
-
-  if (pool_sensors == true){
-    Screen.print(1,"Fetching new data", true);
-    read_sensors();
+  
+  if (1 <= lidar_timer.read_ms()/100) {
+    lidar_timer.reset();
   }
 
-  if (tele_tab.count == 12){
-    t_data.temperature = tele_tab.sum_temperature/telet_tab.count;
-    t_data.humidity = tele_tab.sum_humidity/telet_tab.count;
-    t_data.pressure = tele_tab.sum_humidity/telet_tab.count;
-    t_data.mag_field = tele_tab.sum_magnetic/telet_tab.count;
+  if ( 1 <= sensor_timer.read()/5) {
+    read_sensors(&tele_tab);
+    sensor_timer.reset();
   }
+
   
 
-
-
-  delay(2000);
+  if (tele_tab.count == 12){
+    t_data.temperature = tele_tab.sum_temperature/tele_tab.count;
+    t_data.humidity = tele_tab.sum_humidity/tele_tab.count;
+    t_data.pressure = tele_tab.sum_humidity/tele_tab.count;
+    t_data.mag_field = tele_tab.sum_magnetic/tele_tab.count;
+    tele_tab = telemetry_init();
+  }
+  
+  if (tele_tab.count == 11) {
+    Screen.print(1,"Prepare for new data",true);
+  }
+  
 
   sprintf(line1, "%.2f Celsius", t_data.temperature);
   sprintf(line2,"%.2f %%",t_data.humidity);
+  sprintf(line3, "%.2f Pa", t_data.pressure);
+  sprintf(line4,"%.2d",t_data.mag_field);
 
-  Screen.print(1,line1,false);
-  Screen.print(2,line2,false);
-  
-  delay(2000);
+  Screen.print(0,line1,false);
+  Screen.print(1,line2,false);
+  Screen.print(2,line3,false);
+  Screen.print(3,line4,false);
 
-  sprintf(line1, "%.2f Pa", t_data.pressure);
-  sprintf(line2,"%.2d ",t_data.mag_field);
-
-  Screen.print(1,line1,false);
-  Screen.print(2,line2,false);
-
-  delay(2000);
+ 
   /*if (hasIoTHub && hasWifi)
   {
     char buff[128];
