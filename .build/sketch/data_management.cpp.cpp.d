@@ -305,4 +305,5 @@ c:\Users\carta\Documents\IoTWorkbenchProjects\projects\DeteX_Firmware\Device\.bu
  C:\Users\carta\AppData\Local\Arduino15\packages\AZ3166\hardware\stm32f4\1.6.2\system/azure-iot-sdk-c/iothub_client/inc/iothubtransportmqtt.h \
  C:\Users\carta\AppData\Local\Arduino15\packages\AZ3166\hardware\stm32f4\1.6.2\system/azure-iot-sdk-c/azureiotcerts.h \
  C:\Users\carta\AppData\Local\Arduino15\packages\AZ3166\hardware\stm32f4\1.6.2\libraries\AzureIoT\src/AzureIotHub.h \
- C:\Users\carta\AppData\Local\Arduino15\packages\AZ3166\hardware\stm32f4\1.6.2\cores\arduino/wiring.h
+ C:\Users\carta\AppData\Local\Arduino15\packages\AZ3166\hardware\stm32f4\1.6.2\cores\arduino/wiring.h \
+ c:\Users\carta\Documents\IoTWorkbenchProjects\projects\DeteX_Firmware\Device\.build\sketch\timing_mngmt.h

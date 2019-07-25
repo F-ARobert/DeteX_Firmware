@@ -27,13 +27,13 @@ typedef struct telemetry_data {
 
 typedef struct telemetry_table {
     int8_t count;
-    float temperature_table[NUMBER_OF_OBSERVATIONS];
+    //float temperature_table[NUMBER_OF_OBSERVATIONS];
     float sum_temperature;
-    float pressure_table[NUMBER_OF_OBSERVATIONS];
+    //float pressure_table[NUMBER_OF_OBSERVATIONS];
     float sum_pressure;
-    float humidity_table[NUMBER_OF_OBSERVATIONS];
+    //float humidity_table[NUMBER_OF_OBSERVATIONS];
     float sum_humidity;
-    mag_field_t magnetic_table[NUMBER_OF_OBSERVATIONS];
+    //mag_field_t magnetic_table[NUMBER_OF_OBSERVATIONS];
     mag_field_t sum_magnetic;
 }telemetry_table_t;
 

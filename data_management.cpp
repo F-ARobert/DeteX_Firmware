@@ -25,10 +25,10 @@ telemetry_table_t telemetry_init(){
     tele_tab.sum_magnetic.z = 0;
     tele_tab.sum_pressure = 0;
 
-    memset(&tele_tab.temperature_table,0,NUMBER_OF_OBSERVATIONS*sizeof(float));
+    /*memset(&tele_tab.temperature_table,0,NUMBER_OF_OBSERVATIONS*sizeof(float));
     memset(&tele_tab.pressure_table,0,NUMBER_OF_OBSERVATIONS*sizeof(float));
     memset(&tele_tab.humidity_table,0,NUMBER_OF_OBSERVATIONS*sizeof(float));
-    memset(&tele_tab.magnetic_table,0,NUMBER_OF_OBSERVATIONS*sizeof(int));
+    memset(&tele_tab.magnetic_table,0,NUMBER_OF_OBSERVATIONS*sizeof(int));*/
 
     return tele_tab;
 }
@@ -59,10 +59,10 @@ void read_sensors(telemetry_table_t *ptr){
     float humidity = read_humidity();
     mag_field_t mag_field = read_magnetic();
 
-    ptr->humidity_table[ptr->count] = humidity;
+    /*ptr->humidity_table[ptr->count] = humidity;
     ptr->temperature_table[ptr->count] = temperature;
     ptr->pressure_table[ptr->count] = pressure;
-    ptr->magnetic_table[ptr->count] = mag_field;
+    ptr->magnetic_table[ptr->count] = mag_field;*/
 
     ptr->sum_humidity += humidity;
     ptr->sum_magnetic.x += mag_field.x;

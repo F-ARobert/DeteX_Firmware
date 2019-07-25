@@ -35,6 +35,11 @@
     "Includepath": ""
   },
   {
+    "Sourcefile": "c:\\Users\\carta\\Documents\\IoTWorkbenchProjects\\projects\\DeteX_Firmware\\Device\\.build\\sketch\\timing_mngmt.cpp",
+    "Include": "",
+    "Includepath": ""
+  },
+  {
     "Sourcefile": "C:\\Users\\carta\\AppData\\Local\\Arduino15\\packages\\AZ3166\\hardware\\stm32f4\\1.6.2\\libraries\\Sensors\\src\\HTS221Sensor.cpp",
     "Include": "",
     "Includepath": ""

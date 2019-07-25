@@ -22,7 +22,7 @@ telemetry_table_t telemetry_init();
 int8_t calc_average(telemetry_data_t *ptr_data, telemetry_table_t *ptr_table);
 #line 56 "c:\\Users\\carta\\Documents\\IoTWorkbenchProjects\\projects\\DeteX_Firmware\\Device\\data_management.cpp"
 void read_sensors(telemetry_table_t *ptr);
-#line 40 "c:\\Users\\carta\\Documents\\IoTWorkbenchProjects\\projects\\DeteX_Firmware\\Device\\device.ino"
+#line 36 "c:\\Users\\carta\\Documents\\IoTWorkbenchProjects\\projects\\DeteX_Firmware\\Device\\device.ino"
 void setup();
 #line 67 "c:\\Users\\carta\\Documents\\IoTWorkbenchProjects\\projects\\DeteX_Firmware\\Device\\device.ino"
 void loop();
@@ -39,10 +39,10 @@ telemetry_table_t telemetry_init(){
     tele_tab.sum_magnetic.z = 0;
     tele_tab.sum_pressure = 0;
 
-    memset(&tele_tab.temperature_table,0,NUMBER_OF_OBSERVATIONS*sizeof(float));
+    /*memset(&tele_tab.temperature_table,0,NUMBER_OF_OBSERVATIONS*sizeof(float));
     memset(&tele_tab.pressure_table,0,NUMBER_OF_OBSERVATIONS*sizeof(float));
     memset(&tele_tab.humidity_table,0,NUMBER_OF_OBSERVATIONS*sizeof(float));
-    memset(&tele_tab.magnetic_table,0,NUMBER_OF_OBSERVATIONS*sizeof(int));
+    memset(&tele_tab.magnetic_table,0,NUMBER_OF_OBSERVATIONS*sizeof(int));*/
 
     return tele_tab;
 }
@@ -73,10 +73,10 @@ void read_sensors(telemetry_table_t *ptr){
     float humidity = read_humidity();
     mag_field_t mag_field = read_magnetic();
 
-    ptr->humidity_table[ptr->count] = humidity;
+    /*ptr->humidity_table[ptr->count] = humidity;
     ptr->temperature_table[ptr->count] = temperature;
     ptr->pressure_table[ptr->count] = pressure;
-    ptr->magnetic_table[ptr->count] = mag_field;
+    ptr->magnetic_table[ptr->count] = mag_field;*/
 
     ptr->sum_humidity += humidity;
     ptr->sum_magnetic.x += mag_field.x;
@@ -99,9 +99,9 @@ void read_sensors(telemetry_table_t *ptr){
 #include "AzureIotHub.h"
 #include "SystemTickCounter.h"
 #include "wiring.h"
-#include "mbed.h" 
 
-#include "data_management.h"
+
+#include "timing_mngmt.h"
 
 
 static bool hasWifi = false;
@@ -111,30 +111,27 @@ static bool hasIoTHub = false;
 /* Global variable ****************************/
 telemetry_table_t tele_tab;
 telemetry_data_t t_data;
-bool first_pass = true;
-    float pressure = 0;
-    float temperature = 0;
-    float humidity = 0;
-    int mag_field = 0;
 
-/* Initialize timers */
-Timer sensor_timer;
+/* Initialize tickers */
+Ticker lidar_send;
+Ticker sensors_read;
+
 Timer lidar_timer;
-Timer timing;
-int lidar_time;
-int sensor_time;
-int timing_time;
 
-/* Test variables */
-char line1[20];
-char line2[20];
-char line3[20];
-char line4[20];
-bool sensor_flag = true; 
+int lidar_time;
+
+/* Global functions */
+void lidar_time_read(void);
+void read_all_sensors(void);
+
+/* Assign function pointers */
+void (*read_sensors_ptr)(void) = &read_all_sensors;
+void (*lidar_time_read_ptr)(void) = &lidar_time_read;
 
 
 void setup() {
   pinMode(LED_USER, OUTPUT);
+
   /* Sensor intialization */
   init_onboard_sensors();
   tele_tab = telemetry_init();
@@ -157,44 +154,19 @@ void setup() {
     Screen.print(1, "No Wi-Fi");
   } */
 
-
+  /* Set up iunterupts and timers */
+  lidar_timer.start();
+  lidar_send.attach(lidar_time_read_ptr,0.1);
+  sensors_read.attach(read_sensors_ptr,5.0);
 }
 
 void loop() {
   // put your main code here, to run repeatedly:
-  if (first_pass) {
-    sensor_timer.start();
-    lidar_timer.start();
-    timing.start();
-    first_pass = false;
-  }
-
-  
-
-  
-  if (1 <= (lidar_timer.read_ms()/100)) {
-    lidar_time = lidar_timer.read_ms();
-    lidar_timer.reset();
-  }
-
-
-
-  if (1 <= (sensor_timer.read()/5)) {
-    read_sensors(&tele_tab);
-    sensor_timer.reset();
-  }
 
   if (tele_tab.count == 12){
     calc_average(&t_data, &tele_tab);
-    /*t_data.temperature = tele_tab.sum_temperature/tele_tab.count;
-    t_data.humidity = tele_tab.sum_humidity/tele_tab.count;
-    t_data.pressure = tele_tab.sum_pressure/tele_tab.count;
-    t_data.mag_field.x = tele_tab.sum_magnetic.x/tele_tab.count;
-    t_data.mag_field.y = tele_tab.sum_magnetic.y/tele_tab.count;
-    t_data.mag_field.z = tele_tab.sum_magnetic.z/tele_tab.count;*/
 
     /* For testing purposes */
-
     Serial.printf("---------- New Output ----------------\n");
     Serial.printf("Lidar timer read : %d\n\n", lidar_time);
 
@@ -202,15 +174,7 @@ void loop() {
     Serial.printf("%.2f %% humidity\n",t_data.humidity);
     Serial.printf("%.2f Pa\n", t_data.pressure);
     Serial.printf("Magnetic field: x %d, y %d, z %d\n\n", t_data.mag_field.x, t_data.mag_field.y,t_data.mag_field.z);
-    /*sprintf(line1, "%.2f Celsius", t_data.temperature);
-    sprintf(line2,"%.2f %%",t_data.humidity);
-    sprintf(line3, "%.2f Pa", t_data.pressure);
-    sprintf(line4,"x %d, y %d, z %d", t_data.mag_field.x, t_data.mag_field.y,t_data.mag_field.z);
 
-    Screen.print(0,line1,false);
-    Screen.print(1,line2,false);
-    Screen.print(2,line3,false);
-    Screen.print(3,line4,true);*/
     /* End testing */
 
     tele_tab = telemetry_init();
@@ -226,4 +190,15 @@ void loop() {
     if (DevKitMQTTClient_SendEvent(buff))
   }*/
 
+}
+
+/********* TO PUT UN SEPERATE HEADER FILE ********************/
+void lidar_time_read(void){
+  lidar_time = lidar_timer.read_ms();
+  lidar_timer.reset();
+}
+
+void read_all_sensors(void){
+  Serial.printf("Lidar timer read : %d\n", lidar_time);
+  read_sensors(&tele_tab);
 }
