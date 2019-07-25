@@ -169,22 +169,17 @@ void loop() {
     first_pass = false;
   }
 
-  lidar_time = lidar_timer.read_ms();
-  sensor_time = sensor_timer.read();
+  
 
   
-  if (1 <= lidar_time/100) {
+  if (1 <= (lidar_timer.read_ms()/100)) {
+    lidar_time = lidar_timer.read_ms();
     lidar_timer.reset();
   }
 
-  /*sprintf(line1, "S-Read Count: %.2d", tele_tab.count);
-  sprintf(line2, "s timer: %.2d", sensor_time);
-  sprintf(line3, "l timer: %.2d", lidar_time);
-  Screen.print(0,line1,false);
-  Screen.print(1,line2,false);
-  Screen.print(2,line3,false);*/
 
-  if (1 <= (sensor_timer/5)) {
+
+  if (1 <= (sensor_timer.read()/5)) {
     read_sensors(&tele_tab);
     sensor_timer.reset();
   }
@@ -199,7 +194,15 @@ void loop() {
     t_data.mag_field.z = tele_tab.sum_magnetic.z/tele_tab.count;*/
 
     /* For testing purposes */
-    sprintf(line1, "%.2f Celsius", t_data.temperature);
+
+    Serial.printf("---------- New Output ----------------\n");
+    Serial.printf("Lidar timer read : %d\n\n", lidar_time);
+
+    Serial.printf("%.2f Celsius\n", t_data.temperature);
+    Serial.printf("%.2f %% humidity\n",t_data.humidity);
+    Serial.printf("%.2f Pa\n", t_data.pressure);
+    Serial.printf("Magnetic field: x %d, y %d, z %d\n\n", t_data.mag_field.x, t_data.mag_field.y,t_data.mag_field.z);
+    /*sprintf(line1, "%.2f Celsius", t_data.temperature);
     sprintf(line2,"%.2f %%",t_data.humidity);
     sprintf(line3, "%.2f Pa", t_data.pressure);
     sprintf(line4,"x %d, y %d, z %d", t_data.mag_field.x, t_data.mag_field.y,t_data.mag_field.z);
@@ -207,7 +210,7 @@ void loop() {
     Screen.print(0,line1,false);
     Screen.print(1,line2,false);
     Screen.print(2,line3,false);
-    Screen.print(3,line4,true);
+    Screen.print(3,line4,true);*/
     /* End testing */
 
     tele_tab = telemetry_init();
