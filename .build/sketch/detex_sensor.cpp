@@ -14,11 +14,10 @@ DevI2C *i2c;
 HTS221Sensor *HT_sensor;
 LPS22HBSensor *pressure_sensor;
 LIS2MDLSensor *mag_sensor;
-static RGB_LED rgbLed;
 static float humidity;
 static float temperature;
 static float pressure;
-static int mag_field;
+static int mag_field[3];
 
 
 /* Temeprature and humidity *****************/
@@ -41,8 +40,8 @@ void init_onboard_sensors(void)
     humidity = -1;
     temperature = -1000;
     pressure = 0;
-    mag_field = 0;
-}
+    memset(mag_field,0,sizeof(mag_field));
+    }
 
 /* Temeprature and humidity *****************/
 float read_temperature(void){
@@ -65,16 +64,21 @@ float read_humidity(void){
 
 /* Pressure *******************************/
 float read_pressure(void){
-    float pressure = 0;
+    pressure = 0;
     pressure_sensor->getPressure(&pressure);
 
     return pressure;
 }
 
 /* Magnetometer *************************/
-int read_magnetic(void){
-    int mag_field = 0;
-    mag_sensor->getMAxes(&mag_field);
+mag_field_t read_magnetic(void){
+    int tab[3];
+    mag_field_t value;
+    mag_sensor->getMAxes(tab);
 
-    return mag_field;
+    value.x = tab[0];
+    value.y = tab[1];
+    value.z = tab[2];
+
+    return value;
 }

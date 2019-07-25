@@ -29,13 +29,15 @@ telemetry_table_t telemetry_init(){
     tele_tab.count = 0;
     tele_tab.sum_humidity = 0;
     tele_tab.sum_temperature = 0;
-    tele_tab.sum_magnetic = 0;
+    tele_tab.sum_magnetic.x = 0;
+    tele_tab.sum_magnetic.y = 0;
+    tele_tab.sum_magnetic.z = 0;
     tele_tab.sum_pressure = 0;
 
     memset(&tele_tab.temperature_table,0,12*sizeof(float));
     memset(&tele_tab.pressure_table,0,12*sizeof(float));
     memset(&tele_tab.humidity_table,0,12*sizeof(float));
-    memset(&tele_tab.magnetic_table,0,12*sizeof(int32_t));
+    memset(&tele_tab.magnetic_table,0,12*sizeof(int));
 
     return tele_tab;
 }
@@ -45,9 +47,11 @@ int8_t calc_average(telemetry_data_t *ptr_data, telemetry_table_t *ptr_table){
     ptr_data->temperature = (ptr_table->sum_temperature/ptr_table->count);
     ptr_data->humidity = (ptr_table->sum_humidity/ptr_table->count);
     ptr_data->pressure = (ptr_table->sum_pressure/ptr_table->count);
-    ptr_data->mag_field = (ptr_table->sum_magnetic/ptr_table->count);
+    ptr_data->mag_field.x = (ptr_table->sum_magnetic.x/ptr_table->count);
+    ptr_data->mag_field.y = (ptr_table->sum_magnetic.y/ptr_table->count);
+    ptr_data->mag_field.z = (ptr_table->sum_magnetic.z/ptr_table->count);
 
-    if (ptr_data->temperature == 0 || ptr_data->pressure == 0 || ptr_data->mag_field == 0 || ptr_data->humidity == 0){
+    if (ptr_data->temperature == 0 || ptr_data->pressure == 0 || ptr_data->humidity == 0){
         return DATA_MNGMT_ERROR;
     } else {
 
@@ -58,22 +62,25 @@ int8_t calc_average(telemetry_data_t *ptr_data, telemetry_table_t *ptr_table){
 }
 
 /* Read sensors ***************************/
-void read_sensors(void){
+void read_sensors(telemetry_table_t *ptr){
     float pressure = read_pressure();
     float temperature = read_temperature();
     float humidity = read_humidity();
-    int32_t mag_field = read_magnetic();
+    mag_field_t mag_field = read_magnetic();
 
+    ptr->humidity_table[ptr->count] = humidity;
+    ptr->temperature_table[ptr->count] = temperature;
+    ptr->pressure_table[ptr->count] = pressure;
+    ptr->magnetic_table[ptr->count] = mag_field;
 
-    tele_tab.humidity_table[tele_tab.count] = humidity;
-    tele_tab.temperature_table[tele_tab.count] = temperature;
-    tele_tab.pressure_table[tele_tab.count] = pressure;
-    tele_tab.magnetic_table[tele_tab.count] = mag_field;
+    ptr->sum_humidity += humidity;
+    ptr->sum_magnetic.x += mag_field.x;
+    ptr->sum_magnetic.y += mag_field.y;
+    ptr->sum_magnetic.z += mag_field.z;
+    ptr->sum_pressure += pressure;
+    ptr->sum_temperature += temperature;
 
-    tele_tab.sum_humidity += humidity;
-    tele_tab.sum_magnetic += mag_field;
-    tele_tab.sum_pressure += pressure;
-    tele_tab.sum_temperature += temperature;
+    ptr->count++;
 }
 # 1 "c:\\Users\\carta\\Documents\\IoTWorkbenchProjects\\projects\\DeteX_Firmware\\Device\\device.ino"
 # 2 "c:\\Users\\carta\\Documents\\IoTWorkbenchProjects\\projects\\DeteX_Firmware\\Device\\device.ino" 2
@@ -81,91 +88,145 @@ void read_sensors(void){
 # 4 "c:\\Users\\carta\\Documents\\IoTWorkbenchProjects\\projects\\DeteX_Firmware\\Device\\device.ino" 2
 # 5 "c:\\Users\\carta\\Documents\\IoTWorkbenchProjects\\projects\\DeteX_Firmware\\Device\\device.ino" 2
 # 6 "c:\\Users\\carta\\Documents\\IoTWorkbenchProjects\\projects\\DeteX_Firmware\\Device\\device.ino" 2
-
+# 7 "c:\\Users\\carta\\Documents\\IoTWorkbenchProjects\\projects\\DeteX_Firmware\\Device\\device.ino" 2
 
 # 9 "c:\\Users\\carta\\Documents\\IoTWorkbenchProjects\\projects\\DeteX_Firmware\\Device\\device.ino" 2
-# 10 "c:\\Users\\carta\\Documents\\IoTWorkbenchProjects\\projects\\DeteX_Firmware\\Device\\device.ino" 2
 
 
 static bool hasWifi = false;
 static bool hasIoTHub = false;
 
 
+/* Global variable ****************************/
+telemetry_table_t tele_tab;
+telemetry_data_t t_data;
+bool first_pass = true;
+    float pressure = 0;
+    float temperature = 0;
+    float humidity = 0;
+    int mag_field = 0;
+
+/* Initialize timers */
+Timer sensor_timer;
+Timer lidar_timer;
+Timer timing;
+int lidar_time;
+int sensor_time;
+int timing_time;
+
+/* Test variables */
 char line1[20];
 char line2[20];
 char line3[20];
+char line4[20];
+bool sensor_flag = true;
+
 
 void setup() {
-
+  pinMode(LED_USER, 0x2);
   /* Sensor intialization */
   init_onboard_sensors();
-  telemetry_table_t tele_tab = telemetry_init();
+  tele_tab = telemetry_init();
 
-  /* Initialize interrupt timers */
-  Timer sensor_timer;
-  Timer lidar_timer;
+  /* if (WiFi.begin() == WL_CONNECTED)
 
-  /* interrupt flags */
-  bool pool_sensors = false;
-
-  /* Attach */
-  sensor_timer.initialize(5000);
-  sensor_timer.attachInterrupt(read_sensors());
-
-  if (WiFi.begin() == WL_CONNECTED)
   {
+
     hasWifi = true;
+
     Screen.print(1, "Running...");
 
+
+
     if (!DevKitMQTTClient_Init())
+
     {
+
       hasIoTHub = false;
+
       return;
+
     }
+
     hasIoTHub = true;
+
   }
+
   else
+
   {
+
     hasWifi = false;
+
     Screen.print(1, "No Wi-Fi");
-  }
-  sensor_timer.start();
+
+  } */
+# 65 "c:\\Users\\carta\\Documents\\IoTWorkbenchProjects\\projects\\DeteX_Firmware\\Device\\device.ino"
 }
 
 void loop() {
   // put your main code here, to run repeatedly:
-  Screen.clean();
-
-  if (pool_sensors == true){
-    Screen.print(1,"Fetching new data", true);
-    read_sensors();
+  if (first_pass) {
+    sensor_timer.start();
+    lidar_timer.start();
+    timing.start();
+    first_pass = false;
   }
 
-  if (t_data)
+  lidar_time = lidar_timer.read_ms();
+  sensor_time = sensor_timer.read();
 
 
-  t_data.temperature = read_temperature();
-  t_data.humidity = read_humidity();
-  t_data.pressure = read_pressure();
-  t_data.mag_field = read_magnetic();
+  if (1 <= lidar_time/100) {
+    lidar_timer.reset();
+  }
 
-  delay(2000);
+  /*sprintf(line1, "S-Read Count: %.2d", tele_tab.count);
 
-  sprintf(line1, "%.2f Celsius", t_data.temperature);
-  sprintf(line2,"%.2f %%",t_data.humidity);
+  sprintf(line2, "s timer: %.2d", sensor_time);
 
-  Screen.print(1,line1,false);
-  Screen.print(2,line2,false);
+  sprintf(line3, "l timer: %.2d", lidar_time);
 
-  delay(2000);
+  Screen.print(0,line1,false);
 
-  sprintf(line1, "%.2f Pa", t_data.pressure);
-  sprintf(line2,"%.2d ",t_data.mag_field);
+  Screen.print(1,line2,false);
 
-  Screen.print(1,line1,false);
-  Screen.print(2,line2,false);
+  Screen.print(2,line3,false);*/
+# 91 "c:\\Users\\carta\\Documents\\IoTWorkbenchProjects\\projects\\DeteX_Firmware\\Device\\device.ino"
+  if (1 <= (sensor_timer/5)) {
+    read_sensors(&tele_tab);
+    sensor_timer.reset();
+  }
 
-  delay(2000);
+  if (tele_tab.count == 12){
+    calc_average(&t_data, &tele_tab);
+    /*t_data.temperature = tele_tab.sum_temperature/tele_tab.count;
+
+    t_data.humidity = tele_tab.sum_humidity/tele_tab.count;
+
+    t_data.pressure = tele_tab.sum_pressure/tele_tab.count;
+
+    t_data.mag_field.x = tele_tab.sum_magnetic.x/tele_tab.count;
+
+    t_data.mag_field.y = tele_tab.sum_magnetic.y/tele_tab.count;
+
+    t_data.mag_field.z = tele_tab.sum_magnetic.z/tele_tab.count;*/
+# 105 "c:\\Users\\carta\\Documents\\IoTWorkbenchProjects\\projects\\DeteX_Firmware\\Device\\device.ino"
+    /* For testing purposes */
+    sprintf(line1, "%.2f Celsius", t_data.temperature);
+    sprintf(line2,"%.2f %%",t_data.humidity);
+    sprintf(line3, "%.2f Pa", t_data.pressure);
+    sprintf(line4,"x %d, y %d, z %d", t_data.mag_field.x, t_data.mag_field.y,t_data.mag_field.z);
+
+    Screen.print(0,line1,false);
+    Screen.print(1,line2,false);
+    Screen.print(2,line3,false);
+    Screen.print(3,line4,true);
+    /* End testing */
+
+    tele_tab = telemetry_init();
+  }
+
   /*if (hasIoTHub && hasWifi)
 
   {
@@ -183,5 +244,5 @@ void loop() {
     if (DevKitMQTTClient_SendEvent(buff))
 
   }*/
-# 100 "c:\\Users\\carta\\Documents\\IoTWorkbenchProjects\\projects\\DeteX_Firmware\\Device\\device.ino"
+# 130 "c:\\Users\\carta\\Documents\\IoTWorkbenchProjects\\projects\\DeteX_Firmware\\Device\\device.ino"
 }

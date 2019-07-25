@@ -15,6 +15,12 @@ Made by DeteX
 #include "ST_INTERFACES\DevI2C.h"
 #include "parson.h"
 
+/* Strucutres *****************************************/
+typedef struct mag_field {
+    int x;
+    int y;
+    int z;
+}mag_field_t;
 
 /*******************************************************/ 
 /* Onboard sensors *************/
@@ -51,6 +57,6 @@ float read_pressure(void);
 @Param: None
 @Return: None
 */
-int read_magnetic(void);
+mag_field_t read_magnetic(void);
 
 #endif /* DETEX_SENSOR_H */

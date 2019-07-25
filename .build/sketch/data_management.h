@@ -22,7 +22,7 @@ typedef struct telemetry_data {
     float temperature;
     float humidity;
     float pressure;
-    int16_t mag_field;
+    mag_field_t mag_field;
 }telemetry_data_t;
 
 typedef struct telemetry_table {
@@ -33,8 +33,8 @@ typedef struct telemetry_table {
     float sum_pressure;
     float humidity_table[NUMBER_OF_OBSERVATIONS];
     float sum_humidity;
-    int32_t magnetic_table[NUMBER_OF_OBSERVATIONS];
-    int32_t sum_magnetic;
+    mag_field_t magnetic_table[NUMBER_OF_OBSERVATIONS];
+    mag_field_t sum_magnetic;
 }telemetry_table_t;
 
 /* External variables ***************************/
@@ -51,18 +51,16 @@ telemetry_table_t telemetry_init(void);
 
 /*
 @Brief: Calculates the averages of tables in a telemetry table struct
-@Param: A telemetry structure
+@Param: A telemetry data structure pointer, telemetry table structure pointer
 @Return: Error message
  */
 int8_t calc_average(telemetry_data_t *ptr_data, telemetry_table_t *ptr_table);
 
-/* Reads all telemetry sensors ************/
-void read_sensors(void);
-
-
-
-
-
-
+/*
+@Brief: Reads data from all sensors
+@Param: A telemetry table structure
+@Return: Error message
+ */
+void read_sensors(telemetry_table_t *ptr);
 
 #endif
