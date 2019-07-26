@@ -11,6 +11,15 @@
  * 8. Place some object inside the 0.5 meters' range, check what will happen to the RGB led :)
  */
 
+/*
+  Pour implémenter ce code au code principal il faut:
+    Copier-coller la fonction nombre_objet
+    Copier-coller le contenu du setup
+    Copier-coller le if() de la loop
+    Installer le driver (voir drive - ressources logicielles)
+*/
+
+
  // This sketch code is based on the RPLIDAR driver library provided by RoboPeak
 #include <RPLidar.h>
 
@@ -268,6 +277,7 @@ void loop()
 
 
       //et set up le prochain tour
+      i_tab = 0; 
       i_loop = 0;
       minDistance = 100000;
       angleAtMinDist = 0;
