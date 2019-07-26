@@ -1,6 +1,6 @@
 #include <Arduino.h>
-#line 1 "c:\\Users\\carta\\Documents\\IoTWorkbenchProjects\\projects\\DeteX_Firmware\\Device\\data_management.cpp"
-#line 1 "c:\\Users\\carta\\Documents\\IoTWorkbenchProjects\\projects\\DeteX_Firmware\\Device\\data_management.cpp"
+#line 1 "c:\\Users\\Alex\\Documents\\IoTWorkbenchProjects\\projects\\IoTproject\\Device\\data_management.cpp"
+#line 1 "c:\\Users\\Alex\\Documents\\IoTWorkbenchProjects\\projects\\IoTproject\\Device\\data_management.cpp"
 /* This file controls data received from various sensors linked to MXChip
 Included features are:
     - Sorting data
@@ -16,17 +16,17 @@ Made by DeteX
 //static telemetry_table_t tele_tab;
 
 /* Initialize telemetry data ***************/
-#line 16 "c:\\Users\\carta\\Documents\\IoTWorkbenchProjects\\projects\\DeteX_Firmware\\Device\\data_management.cpp"
+#line 16 "c:\\Users\\Alex\\Documents\\IoTWorkbenchProjects\\projects\\IoTproject\\Device\\data_management.cpp"
 telemetry_table_t telemetry_init();
-#line 37 "c:\\Users\\carta\\Documents\\IoTWorkbenchProjects\\projects\\DeteX_Firmware\\Device\\data_management.cpp"
+#line 37 "c:\\Users\\Alex\\Documents\\IoTWorkbenchProjects\\projects\\IoTproject\\Device\\data_management.cpp"
 int8_t calc_average(telemetry_data_t *ptr_data, telemetry_table_t *ptr_table);
-#line 56 "c:\\Users\\carta\\Documents\\IoTWorkbenchProjects\\projects\\DeteX_Firmware\\Device\\data_management.cpp"
+#line 56 "c:\\Users\\Alex\\Documents\\IoTWorkbenchProjects\\projects\\IoTproject\\Device\\data_management.cpp"
 void read_sensors(telemetry_table_t *ptr);
-#line 36 "c:\\Users\\carta\\Documents\\IoTWorkbenchProjects\\projects\\DeteX_Firmware\\Device\\device.ino"
+#line 36 "c:\\Users\\Alex\\Documents\\IoTWorkbenchProjects\\projects\\IoTproject\\Device\\device.ino"
 void setup();
-#line 67 "c:\\Users\\carta\\Documents\\IoTWorkbenchProjects\\projects\\DeteX_Firmware\\Device\\device.ino"
+#line 67 "c:\\Users\\Alex\\Documents\\IoTWorkbenchProjects\\projects\\IoTproject\\Device\\device.ino"
 void loop();
-#line 16 "c:\\Users\\carta\\Documents\\IoTWorkbenchProjects\\projects\\DeteX_Firmware\\Device\\data_management.cpp"
+#line 16 "c:\\Users\\Alex\\Documents\\IoTWorkbenchProjects\\projects\\IoTproject\\Device\\data_management.cpp"
 telemetry_table_t telemetry_init(){
     int8_t i;
     telemetry_table_t tele_tab;
@@ -93,7 +93,7 @@ void read_sensors(telemetry_table_t *ptr){
 
 
 
-#line 1 "c:\\Users\\carta\\Documents\\IoTWorkbenchProjects\\projects\\DeteX_Firmware\\Device\\device.ino"
+#line 1 "c:\\Users\\Alex\\Documents\\IoTWorkbenchProjects\\projects\\IoTproject\\Device\\device.ino"
 #include "AZ3166WiFi.h"
 #include "DevKitMQTTClient.h"
 #include "AzureIotHub.h"

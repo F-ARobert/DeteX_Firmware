@@ -1,5 +1,5 @@
-# 1 "c:\\Users\\carta\\Documents\\IoTWorkbenchProjects\\projects\\DeteX_Firmware\\Device\\data_management.cpp"
-# 1 "c:\\Users\\carta\\Documents\\IoTWorkbenchProjects\\projects\\DeteX_Firmware\\Device\\data_management.cpp"
+# 1 "c:\\Users\\Alex\\Documents\\IoTWorkbenchProjects\\projects\\IoTproject\\Device\\data_management.cpp"
+# 1 "c:\\Users\\Alex\\Documents\\IoTWorkbenchProjects\\projects\\IoTproject\\Device\\data_management.cpp"
 /* This file controls data received from various sensors linked to MXChip
 
 Included features are:
@@ -15,8 +15,8 @@ Included features are:
 Made by DeteX
 
 */
-# 10 "c:\\Users\\carta\\Documents\\IoTWorkbenchProjects\\projects\\DeteX_Firmware\\Device\\data_management.cpp"
-# 11 "c:\\Users\\carta\\Documents\\IoTWorkbenchProjects\\projects\\DeteX_Firmware\\Device\\data_management.cpp" 2
+# 10 "c:\\Users\\Alex\\Documents\\IoTWorkbenchProjects\\projects\\IoTproject\\Device\\data_management.cpp"
+# 11 "c:\\Users\\Alex\\Documents\\IoTWorkbenchProjects\\projects\\IoTproject\\Device\\data_management.cpp" 2
 
 /* Static variables *************************/
 //static telemetry_table_t tele_tab;
@@ -41,7 +41,7 @@ telemetry_table_t telemetry_init(){
     memset(&tele_tab.humidity_table,0,NUMBER_OF_OBSERVATIONS*sizeof(float));
 
     memset(&tele_tab.magnetic_table,0,NUMBER_OF_OBSERVATIONS*sizeof(int));*/
-# 33 "c:\\Users\\carta\\Documents\\IoTWorkbenchProjects\\projects\\DeteX_Firmware\\Device\\data_management.cpp"
+# 33 "c:\\Users\\Alex\\Documents\\IoTWorkbenchProjects\\projects\\IoTproject\\Device\\data_management.cpp"
     return tele_tab;
 }
 
@@ -78,7 +78,7 @@ void read_sensors(telemetry_table_t *ptr){
     ptr->pressure_table[ptr->count] = pressure;
 
     ptr->magnetic_table[ptr->count] = mag_field;*/
-# 67 "c:\\Users\\carta\\Documents\\IoTWorkbenchProjects\\projects\\DeteX_Firmware\\Device\\data_management.cpp"
+# 67 "c:\\Users\\Alex\\Documents\\IoTWorkbenchProjects\\projects\\IoTproject\\Device\\data_management.cpp"
     ptr->sum_humidity += humidity;
     ptr->sum_magnetic.x += mag_field.x;
     ptr->sum_magnetic.y += mag_field.y;
@@ -88,15 +88,15 @@ void read_sensors(telemetry_table_t *ptr){
 
     ptr->count++;
 }
-# 1 "c:\\Users\\carta\\Documents\\IoTWorkbenchProjects\\projects\\DeteX_Firmware\\Device\\device.ino"
-# 2 "c:\\Users\\carta\\Documents\\IoTWorkbenchProjects\\projects\\DeteX_Firmware\\Device\\device.ino" 2
-# 3 "c:\\Users\\carta\\Documents\\IoTWorkbenchProjects\\projects\\DeteX_Firmware\\Device\\device.ino" 2
-# 4 "c:\\Users\\carta\\Documents\\IoTWorkbenchProjects\\projects\\DeteX_Firmware\\Device\\device.ino" 2
-# 5 "c:\\Users\\carta\\Documents\\IoTWorkbenchProjects\\projects\\DeteX_Firmware\\Device\\device.ino" 2
-# 6 "c:\\Users\\carta\\Documents\\IoTWorkbenchProjects\\projects\\DeteX_Firmware\\Device\\device.ino" 2
+# 1 "c:\\Users\\Alex\\Documents\\IoTWorkbenchProjects\\projects\\IoTproject\\Device\\device.ino"
+# 2 "c:\\Users\\Alex\\Documents\\IoTWorkbenchProjects\\projects\\IoTproject\\Device\\device.ino" 2
+# 3 "c:\\Users\\Alex\\Documents\\IoTWorkbenchProjects\\projects\\IoTproject\\Device\\device.ino" 2
+# 4 "c:\\Users\\Alex\\Documents\\IoTWorkbenchProjects\\projects\\IoTproject\\Device\\device.ino" 2
+# 5 "c:\\Users\\Alex\\Documents\\IoTWorkbenchProjects\\projects\\IoTproject\\Device\\device.ino" 2
+# 6 "c:\\Users\\Alex\\Documents\\IoTWorkbenchProjects\\projects\\IoTproject\\Device\\device.ino" 2
 
 
-# 9 "c:\\Users\\carta\\Documents\\IoTWorkbenchProjects\\projects\\DeteX_Firmware\\Device\\device.ino" 2
+# 9 "c:\\Users\\Alex\\Documents\\IoTWorkbenchProjects\\projects\\IoTproject\\Device\\device.ino" 2
 
 
 static bool hasWifi = false;
@@ -164,7 +164,7 @@ void setup() {
     Screen.print(1, "No Wi-Fi");
 
   } */
-# 61 "c:\\Users\\carta\\Documents\\IoTWorkbenchProjects\\projects\\DeteX_Firmware\\Device\\device.ino"
+# 61 "c:\\Users\\Alex\\Documents\\IoTWorkbenchProjects\\projects\\IoTproject\\Device\\device.ino"
   /* Set up iunterupts and timers */
   lidar_timer.start();
   lidar_send.attach(lidar_time_read_ptr,0.1);
@@ -208,7 +208,7 @@ void loop() {
     if (DevKitMQTTClient_SendEvent(buff))
 
   }*/
-# 97 "c:\\Users\\carta\\Documents\\IoTWorkbenchProjects\\projects\\DeteX_Firmware\\Device\\device.ino"
+# 97 "c:\\Users\\Alex\\Documents\\IoTWorkbenchProjects\\projects\\IoTproject\\Device\\device.ino"
 }
 
 /********* TO PUT UN SEPERATE HEADER FILE ********************/

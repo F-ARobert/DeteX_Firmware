@@ -3,5 +3,5 @@
     "sketch": "device.ino",
     "configuration": "upload_method=OpenOCDMethod",
     "output": "./.build",
-    "port": "COM3"
+    "port": "COM4"
 }

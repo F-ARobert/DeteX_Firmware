@@ -2,130 +2,130 @@
   {
     "Sourcefile": "",
     "Include": "",
-    "Includepath": "C:\\Users\\carta\\AppData\\Local\\Arduino15\\packages\\AZ3166\\hardware\\stm32f4\\1.6.2\\cores\\arduino"
+    "Includepath": "C:\\Users\\Alex\\AppData\\Local\\Arduino15\\packages\\AZ3166\\hardware\\stm32f4\\1.6.2\\cores\\arduino"
   },
   {
     "Sourcefile": "",
     "Include": "",
-    "Includepath": "C:\\Users\\carta\\AppData\\Local\\Arduino15\\packages\\AZ3166\\hardware\\stm32f4\\1.6.2\\variants\\MXChip_AZ3166"
+    "Includepath": "C:\\Users\\Alex\\AppData\\Local\\Arduino15\\packages\\AZ3166\\hardware\\stm32f4\\1.6.2\\variants\\MXChip_AZ3166"
   },
   {
-    "Sourcefile": "c:\\Users\\carta\\Documents\\IoTWorkbenchProjects\\projects\\DeteX_Firmware\\Device\\.build\\sketch\\data_management.cpp.cpp",
+    "Sourcefile": "c:\\Users\\Alex\\Documents\\IoTWorkbenchProjects\\projects\\IoTproject\\Device\\.build\\sketch\\data_management.cpp.cpp",
     "Include": "Sensor.h",
-    "Includepath": "C:\\Users\\carta\\AppData\\Local\\Arduino15\\packages\\AZ3166\\hardware\\stm32f4\\1.6.2\\libraries\\Sensors\\src"
+    "Includepath": "C:\\Users\\Alex\\AppData\\Local\\Arduino15\\packages\\AZ3166\\hardware\\stm32f4\\1.6.2\\libraries\\Sensors\\src"
   },
   {
-    "Sourcefile": "c:\\Users\\carta\\Documents\\IoTWorkbenchProjects\\projects\\DeteX_Firmware\\Device\\.build\\sketch\\data_management.cpp.cpp",
+    "Sourcefile": "c:\\Users\\Alex\\Documents\\IoTWorkbenchProjects\\projects\\IoTproject\\Device\\.build\\sketch\\data_management.cpp.cpp",
     "Include": "AZ3166WiFi.h",
-    "Includepath": "C:\\Users\\carta\\AppData\\Local\\Arduino15\\packages\\AZ3166\\hardware\\stm32f4\\1.6.2\\libraries\\WiFi\\src"
+    "Includepath": "C:\\Users\\Alex\\AppData\\Local\\Arduino15\\packages\\AZ3166\\hardware\\stm32f4\\1.6.2\\libraries\\WiFi\\src"
   },
   {
-    "Sourcefile": "c:\\Users\\carta\\Documents\\IoTWorkbenchProjects\\projects\\DeteX_Firmware\\Device\\.build\\sketch\\data_management.cpp.cpp",
+    "Sourcefile": "c:\\Users\\Alex\\Documents\\IoTWorkbenchProjects\\projects\\IoTproject\\Device\\.build\\sketch\\data_management.cpp.cpp",
     "Include": "DevKitMQTTClient.h",
-    "Includepath": "C:\\Users\\carta\\AppData\\Local\\Arduino15\\packages\\AZ3166\\hardware\\stm32f4\\1.6.2\\libraries\\AzureIoT\\src"
+    "Includepath": "C:\\Users\\Alex\\AppData\\Local\\Arduino15\\packages\\AZ3166\\hardware\\stm32f4\\1.6.2\\libraries\\AzureIoT\\src"
   },
   {
-    "Sourcefile": "c:\\Users\\carta\\Documents\\IoTWorkbenchProjects\\projects\\DeteX_Firmware\\Device\\.build\\sketch\\data_management.cpp.cpp",
+    "Sourcefile": "c:\\Users\\Alex\\Documents\\IoTWorkbenchProjects\\projects\\IoTproject\\Device\\.build\\sketch\\data_management.cpp.cpp",
     "Include": "",
     "Includepath": ""
   },
   {
-    "Sourcefile": "c:\\Users\\carta\\Documents\\IoTWorkbenchProjects\\projects\\DeteX_Firmware\\Device\\.build\\sketch\\detex_sensor.cpp",
+    "Sourcefile": "c:\\Users\\Alex\\Documents\\IoTWorkbenchProjects\\projects\\IoTproject\\Device\\.build\\sketch\\detex_sensor.cpp",
     "Include": "",
     "Includepath": ""
   },
   {
-    "Sourcefile": "c:\\Users\\carta\\Documents\\IoTWorkbenchProjects\\projects\\DeteX_Firmware\\Device\\.build\\sketch\\timing_mngmt.cpp",
+    "Sourcefile": "c:\\Users\\Alex\\Documents\\IoTWorkbenchProjects\\projects\\IoTproject\\Device\\.build\\sketch\\timing_mngmt.cpp",
     "Include": "",
     "Includepath": ""
   },
   {
-    "Sourcefile": "C:\\Users\\carta\\AppData\\Local\\Arduino15\\packages\\AZ3166\\hardware\\stm32f4\\1.6.2\\libraries\\Sensors\\src\\HTS221Sensor.cpp",
+    "Sourcefile": "C:\\Users\\Alex\\AppData\\Local\\Arduino15\\packages\\AZ3166\\hardware\\stm32f4\\1.6.2\\libraries\\Sensors\\src\\HTS221Sensor.cpp",
     "Include": "",
     "Includepath": ""
   },
   {
-    "Sourcefile": "C:\\Users\\carta\\AppData\\Local\\Arduino15\\packages\\AZ3166\\hardware\\stm32f4\\1.6.2\\libraries\\Sensors\\src\\IoT_DevKit_HW.cpp",
+    "Sourcefile": "C:\\Users\\Alex\\AppData\\Local\\Arduino15\\packages\\AZ3166\\hardware\\stm32f4\\1.6.2\\libraries\\Sensors\\src\\IoT_DevKit_HW.cpp",
     "Include": "",
     "Includepath": ""
   },
   {
-    "Sourcefile": "C:\\Users\\carta\\AppData\\Local\\Arduino15\\packages\\AZ3166\\hardware\\stm32f4\\1.6.2\\libraries\\Sensors\\src\\IrDASensor.cpp",
+    "Sourcefile": "C:\\Users\\Alex\\AppData\\Local\\Arduino15\\packages\\AZ3166\\hardware\\stm32f4\\1.6.2\\libraries\\Sensors\\src\\IrDASensor.cpp",
     "Include": "",
     "Includepath": ""
   },
   {
-    "Sourcefile": "C:\\Users\\carta\\AppData\\Local\\Arduino15\\packages\\AZ3166\\hardware\\stm32f4\\1.6.2\\libraries\\Sensors\\src\\LIS2MDLSensor.cpp",
+    "Sourcefile": "C:\\Users\\Alex\\AppData\\Local\\Arduino15\\packages\\AZ3166\\hardware\\stm32f4\\1.6.2\\libraries\\Sensors\\src\\LIS2MDLSensor.cpp",
     "Include": "",
     "Includepath": ""
   },
   {
-    "Sourcefile": "C:\\Users\\carta\\AppData\\Local\\Arduino15\\packages\\AZ3166\\hardware\\stm32f4\\1.6.2\\libraries\\Sensors\\src\\LPS22HBSensor.cpp",
+    "Sourcefile": "C:\\Users\\Alex\\AppData\\Local\\Arduino15\\packages\\AZ3166\\hardware\\stm32f4\\1.6.2\\libraries\\Sensors\\src\\LPS22HBSensor.cpp",
     "Include": "",
     "Includepath": ""
   },
   {
-    "Sourcefile": "C:\\Users\\carta\\AppData\\Local\\Arduino15\\packages\\AZ3166\\hardware\\stm32f4\\1.6.2\\libraries\\Sensors\\src\\LSM6DSLSensor.cpp",
+    "Sourcefile": "C:\\Users\\Alex\\AppData\\Local\\Arduino15\\packages\\AZ3166\\hardware\\stm32f4\\1.6.2\\libraries\\Sensors\\src\\LSM6DSLSensor.cpp",
     "Include": "",
     "Includepath": ""
   },
   {
-    "Sourcefile": "C:\\Users\\carta\\AppData\\Local\\Arduino15\\packages\\AZ3166\\hardware\\stm32f4\\1.6.2\\libraries\\Sensors\\src\\RGB_LED.cpp",
+    "Sourcefile": "C:\\Users\\Alex\\AppData\\Local\\Arduino15\\packages\\AZ3166\\hardware\\stm32f4\\1.6.2\\libraries\\Sensors\\src\\RGB_LED.cpp",
     "Include": "",
     "Includepath": ""
   },
   {
-    "Sourcefile": "C:\\Users\\carta\\AppData\\Local\\Arduino15\\packages\\AZ3166\\hardware\\stm32f4\\1.6.2\\libraries\\Sensors\\src\\utility\\HTS221_driver.c",
+    "Sourcefile": "C:\\Users\\Alex\\AppData\\Local\\Arduino15\\packages\\AZ3166\\hardware\\stm32f4\\1.6.2\\libraries\\Sensors\\src\\utility\\HTS221_driver.c",
     "Include": "",
     "Includepath": ""
   },
   {
-    "Sourcefile": "C:\\Users\\carta\\AppData\\Local\\Arduino15\\packages\\AZ3166\\hardware\\stm32f4\\1.6.2\\libraries\\Sensors\\src\\utility\\LPS22HB_driver.c",
+    "Sourcefile": "C:\\Users\\Alex\\AppData\\Local\\Arduino15\\packages\\AZ3166\\hardware\\stm32f4\\1.6.2\\libraries\\Sensors\\src\\utility\\LPS22HB_driver.c",
     "Include": "",
     "Includepath": ""
   },
   {
-    "Sourcefile": "C:\\Users\\carta\\AppData\\Local\\Arduino15\\packages\\AZ3166\\hardware\\stm32f4\\1.6.2\\libraries\\Sensors\\src\\utility\\LSM6DSL_acc_gyro_driver.c",
+    "Sourcefile": "C:\\Users\\Alex\\AppData\\Local\\Arduino15\\packages\\AZ3166\\hardware\\stm32f4\\1.6.2\\libraries\\Sensors\\src\\utility\\LSM6DSL_acc_gyro_driver.c",
     "Include": "",
     "Includepath": ""
   },
   {
-    "Sourcefile": "C:\\Users\\carta\\AppData\\Local\\Arduino15\\packages\\AZ3166\\hardware\\stm32f4\\1.6.2\\libraries\\WiFi\\src\\AZ3166WiFi.cpp",
+    "Sourcefile": "C:\\Users\\Alex\\AppData\\Local\\Arduino15\\packages\\AZ3166\\hardware\\stm32f4\\1.6.2\\libraries\\WiFi\\src\\AZ3166WiFi.cpp",
     "Include": "",
     "Includepath": ""
   },
   {
-    "Sourcefile": "C:\\Users\\carta\\AppData\\Local\\Arduino15\\packages\\AZ3166\\hardware\\stm32f4\\1.6.2\\libraries\\WiFi\\src\\AZ3166WiFiClient.cpp",
+    "Sourcefile": "C:\\Users\\Alex\\AppData\\Local\\Arduino15\\packages\\AZ3166\\hardware\\stm32f4\\1.6.2\\libraries\\WiFi\\src\\AZ3166WiFiClient.cpp",
     "Include": "",
     "Includepath": ""
   },
   {
-    "Sourcefile": "C:\\Users\\carta\\AppData\\Local\\Arduino15\\packages\\AZ3166\\hardware\\stm32f4\\1.6.2\\libraries\\WiFi\\src\\AZ3166WiFiServer.cpp",
+    "Sourcefile": "C:\\Users\\Alex\\AppData\\Local\\Arduino15\\packages\\AZ3166\\hardware\\stm32f4\\1.6.2\\libraries\\WiFi\\src\\AZ3166WiFiServer.cpp",
     "Include": "",
     "Includepath": ""
   },
   {
-    "Sourcefile": "C:\\Users\\carta\\AppData\\Local\\Arduino15\\packages\\AZ3166\\hardware\\stm32f4\\1.6.2\\libraries\\WiFi\\src\\AZ3166WiFiUdp.cpp",
+    "Sourcefile": "C:\\Users\\Alex\\AppData\\Local\\Arduino15\\packages\\AZ3166\\hardware\\stm32f4\\1.6.2\\libraries\\WiFi\\src\\AZ3166WiFiUdp.cpp",
     "Include": "",
     "Includepath": ""
   },
   {
-    "Sourcefile": "C:\\Users\\carta\\AppData\\Local\\Arduino15\\packages\\AZ3166\\hardware\\stm32f4\\1.6.2\\libraries\\AzureIoT\\src\\AzureIotHub.cpp",
+    "Sourcefile": "C:\\Users\\Alex\\AppData\\Local\\Arduino15\\packages\\AZ3166\\hardware\\stm32f4\\1.6.2\\libraries\\AzureIoT\\src\\AzureIotHub.cpp",
     "Include": "",
     "Includepath": ""
   },
   {
-    "Sourcefile": "C:\\Users\\carta\\AppData\\Local\\Arduino15\\packages\\AZ3166\\hardware\\stm32f4\\1.6.2\\libraries\\AzureIoT\\src\\DevKitMQTTClient.cpp",
+    "Sourcefile": "C:\\Users\\Alex\\AppData\\Local\\Arduino15\\packages\\AZ3166\\hardware\\stm32f4\\1.6.2\\libraries\\AzureIoT\\src\\DevKitMQTTClient.cpp",
     "Include": "",
     "Includepath": ""
   },
   {
-    "Sourcefile": "C:\\Users\\carta\\AppData\\Local\\Arduino15\\packages\\AZ3166\\hardware\\stm32f4\\1.6.2\\libraries\\AzureIoT\\src\\DevKitOTAUtils.cpp",
+    "Sourcefile": "C:\\Users\\Alex\\AppData\\Local\\Arduino15\\packages\\AZ3166\\hardware\\stm32f4\\1.6.2\\libraries\\AzureIoT\\src\\DevKitOTAUtils.cpp",
     "Include": "",
     "Includepath": ""
   },
   {
-    "Sourcefile": "C:\\Users\\carta\\AppData\\Local\\Arduino15\\packages\\AZ3166\\hardware\\stm32f4\\1.6.2\\libraries\\AzureIoT\\src\\DevkitDPSClient.cpp",
+    "Sourcefile": "C:\\Users\\Alex\\AppData\\Local\\Arduino15\\packages\\AZ3166\\hardware\\stm32f4\\1.6.2\\libraries\\AzureIoT\\src\\DevkitDPSClient.cpp",
     "Include": "",
     "Includepath": ""
   }
