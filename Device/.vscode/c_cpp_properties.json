@@ -1,0 +1,49 @@
+{
+    "configurations": [
+        {
+            "name": "Win32",
+            "defines": [
+                "ARDUINO=10800"
+            ],
+            "includePath": [
+                "${workspaceFolder}",
+                "**/AZ3166/hardware/stm32f4/1.6.2/libraries/Sensors/**",
+                "**/AZ3166/hardware/stm32f4/1.6.2/system/mbed-az3166-driver/mico/include",
+                "**/AZ3166/hardware/stm32f4/1.6.2/system/azure-iot-sdk-c/deps/parson",
+                "**/AZ3166/hardware/stm32f4/1.6.2/libraries/Sensors/src/ST_INTERFACES",
+                "**/AZ3166/hardware/stm32f4/1.6.2/**",
+                "**/AZ3166/tools/**",
+                "${workspaceFolder}/AZ3166/hardware/stm32f4/1.6.2/libraries/Sensors/src",
+                "${workspaceFolder}/AZ3166/hardware/stm32f4/1.6.2/system/azure-iot-sdk-c/deps/parson",
+                "${workspaceFolder}/AZ3166/hardware/stm32f4/1.6.2/system/mbed-os",
+                "${workspaceFolder}/AZ3166/hardware/stm32f4/1.6.2/system/mbed-os/targets/TARGET_STM/TARGET_STM32F4",
+                "${workspaceFolder}/AZ3166/hardware/stm32f4/1.6.2/system/mbed-os/hal",
+                "${workspaceFolder}/RPLidarDriver/**"
+            ],
+            "forcedInclude": [
+                "**/AZ3166/hardware/stm32f4/1.6.2/cores/arduino/Arduino.h"
+            ],
+            "intelliSenseMode": "clang-x64",
+            "cStandard": "c11",
+            "cppStandard": "c++17"
+        },
+        {
+            "name": "Mac",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "${workspaceFolder}/AZ3166/**",
+                "${workspaceFolder}/RPLidarDriver/**",
+                "${workspaceFolder}/AZ3166/hardware/stm32f4/1.6.2/cores/arduino/system"
+            ],
+            "defines": [],
+            "macFrameworkPath": [
+                "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk/System/Library/Frameworks"
+            ],
+            "compilerPath": "/usr/bin/clang",
+            "cStandard": "c11",
+            "cppStandard": "c++17",
+            "intelliSenseMode": "clang-x64"
+        }
+    ],
+    "version": 4
+}
