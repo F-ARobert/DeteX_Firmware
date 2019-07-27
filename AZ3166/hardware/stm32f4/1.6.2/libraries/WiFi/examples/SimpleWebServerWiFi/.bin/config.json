@@ -1,7 +1,0 @@
-{
-  "sketch": "../SimpleWebServerWiFi.ino",
-  "tasks": {
-    "provision": ["device"],
-    "deploy": []
-  }
-}

@@ -1,7 +1,0 @@
-{
-  "sketch": "../WiFiWebClient.ino",
-  "tasks": {
-    "provision": ["device"],
-    "deploy": []
-  }
-}

@@ -1,7 +1,0 @@
-{
-  "sketch": "../ScanNetworks.ino",
-  "tasks": {
-    "provision": ["device"],
-    "deploy": []
-  }
-}

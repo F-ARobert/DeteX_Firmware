@@ -1,7 +1,0 @@
-{
-    "files.exclude": {
-        ".build": true,
-        ".iotworkbenchproject": true
-    },
-    "C_Cpp.errorSquiggles": "Disabled"
-}

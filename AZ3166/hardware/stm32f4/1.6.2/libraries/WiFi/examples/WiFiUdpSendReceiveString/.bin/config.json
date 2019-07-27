@@ -1,7 +1,0 @@
-{
-  "sketch": "../WiFiUdpSendReceiveString.ino",
-  "tasks": {
-    "provision": ["device"],
-    "deploy": []
-  }
-}

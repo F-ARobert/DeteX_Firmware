@@ -1,7 +1,0 @@
-{
-  "sketch": "../WiFiWebServer.ino",
-  "tasks": {
-    "provision": ["device"],
-    "deploy": []
-  }
-}
