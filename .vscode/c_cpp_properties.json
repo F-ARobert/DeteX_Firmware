@@ -6,8 +6,6 @@
                 "ARDUINO=10800"
             ],
             "includePath": [
-                "C:\\Users\\carta\\AppData\\Local\\Arduino15\\packages\\AZ3166\\tools\\**",
-                "C:\\Users\\carta\\AppData\\Local\\Arduino15\\packages\\AZ3166\\hardware\\stm32f4\\1.6.2\\**",
                 "${workspaceFolder}",
                 "**/AZ3166/hardware/stm32f4/1.6.2/libraries/Sensors/**",
                 "**/AZ3166/hardware/stm32f4/1.6.2/system/mbed-az3166-driver/mico/include",
@@ -35,8 +33,10 @@
             "includePath": [
                 "${workspaceFolder}/**",
                 "${workspaceFolder}/AZ3166/**",
+                "${workspaceFolder}/AZ3166/hardware/stm32f4/1.6.2/cores/arduino/system",
+                "${workspaceFolder}/AZ3166/hardware/stm32f4/1.6.2/system/mbed-os",
                 "${workspaceFolder}/RPLidarDriver/**",
-                "${workspaceFolder}/AZ3166/hardware/stm32f4/1.6.2/cores/arduino/system"
+                "${workspaceFolder}/AZ3166/hardware/stm32f4/1.6.2/system/mbed-os/drivers"
             ],
             "defines": [],
             "macFrameworkPath": [

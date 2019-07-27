@@ -306,4 +306,9 @@
  /Users/Felix/Library/Arduino15/packages/AZ3166/hardware/stm32f4/1.6.2/system/azure-iot-sdk-c/azureiotcerts.h \
  /Users/Felix/Library/Arduino15/packages/AZ3166/hardware/stm32f4/1.6.2/libraries/AzureIoT/src/AzureIotHub.h \
  /Users/Felix/Library/Arduino15/packages/AZ3166/hardware/stm32f4/1.6.2/cores/arduino/wiring.h \
- /Users/Felix/Desktop/DeteX_project/Firmware_detex/Device/.build/sketch/timing_mngmt.h
+ /Users/Felix/Library/Arduino15/packages/AZ3166/hardware/stm32f4/1.6.2/system/mbed-os/drivers/Serial.h \
+ /Users/Felix/Desktop/DeteX_project/Firmware_detex/Device/.build/sketch/timing_mngmt.h \
+ /Users/Felix/Desktop/DeteX_project/Firmware_detex/Device/.build/sketch/RPLidarDriver/RPLidar.h \
+ /Users/Felix/Desktop/DeteX_project/Firmware_detex/Device/.build/sketch/RPLidarDriver/inc/rptypes.h \
+ /Users/Felix/Desktop/DeteX_project/Firmware_detex/Device/.build/sketch/RPLidarDriver/inc/rplidar_cmd.h \
+ /Users/Felix/Desktop/DeteX_project/Firmware_detex/Device/.build/sketch/RPLidarDriver/inc/rplidar_protocol.h

@@ -81,11 +81,18 @@ void read_sensors(telemetry_table_t *ptr){
 # 4 "/Users/Felix/Desktop/DeteX_project/Firmware_detex/Device/device.ino" 2
 # 5 "/Users/Felix/Desktop/DeteX_project/Firmware_detex/Device/device.ino" 2
 # 6 "/Users/Felix/Desktop/DeteX_project/Firmware_detex/Device/device.ino" 2
+# 7 "/Users/Felix/Desktop/DeteX_project/Firmware_detex/Device/device.ino" 2
 
 
-# 9 "/Users/Felix/Desktop/DeteX_project/Firmware_detex/Device/device.ino" 2
+# 10 "/Users/Felix/Desktop/DeteX_project/Firmware_detex/Device/device.ino" 2
 
+// This sketch code is based on the RPLIDAR driver library provided by RoboPeak
+# 13 "/Users/Felix/Desktop/DeteX_project/Firmware_detex/Device/device.ino" 2
 
+/* DEFINES */
+# 26 "/Users/Felix/Desktop/DeteX_project/Firmware_detex/Device/device.ino"
+                        // This pin should connected with the RPLIDAR's MOTOCTRL signal
+# 46 "/Users/Felix/Desktop/DeteX_project/Firmware_detex/Device/device.ino"
 static bool hasWifi = false;
 static bool hasIoTHub = false;
 
@@ -105,15 +112,19 @@ int lidar_time;
 /* Global functions */
 void lidar_time_read(void);
 void read_all_sensors(void);
+int nombre_objet(float tableau_complet[200]);
 
 /* Assign function pointers */
 void (*read_sensors_ptr)(void) = &read_all_sensors;
 void (*lidar_time_read_ptr)(void) = &lidar_time_read;
 
 
-void setup() {
-  pinMode(LED_USER, 0x2);
 
+
+
+
+void setup() {
+# 86 "/Users/Felix/Desktop/DeteX_project/Firmware_detex/Device/device.ino"
   /* Sensor intialization */
   init_onboard_sensors();
   tele_tab = telemetry_init();
@@ -144,7 +155,7 @@ void setup() {
 
 void loop() {
   // put your main code here, to run repeatedly:
-
+# 179 "/Users/Felix/Desktop/DeteX_project/Firmware_detex/Device/device.ino"
   if (tele_tab.count == 12){
     calc_average(&t_data, &tele_tab);
 
@@ -183,4 +194,31 @@ void lidar_time_read(void){
 void read_all_sensors(void){
   Serial.printf("Lidar timer read : %d\n", lidar_time);
   read_sensors(&tele_tab);
+}
+
+/* LIDAR FUNCTIONALITIES */
+int nombre_objet(float tableau_complet[200])
+{
+  //Détecte le nombre d'objet selon un shéma de deux états
+  //Voir shema.jpg
+  int nb_objet = 0;
+
+  int etat = 0; //0->attend un objet, 1->attend le "vide"
+
+  for (int i = 0; i <= 200; i++)
+  {
+    if (etat == 0 && tableau_complet[i] < 1200 /*4000 pour livraison*/)
+    {
+      nb_objet++;
+      etat = 1;
+      //Si un tableau d'objets existe, c'est ici qu'on le remplis
+    }
+
+    if (etat == 1 && tableau_complet[i] > 1200 /*4000 pour livraison*/)
+    {
+      etat = 0;
+    }
+  }
+
+  return nb_objet;
 }

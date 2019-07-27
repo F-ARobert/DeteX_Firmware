@@ -72,6 +72,7 @@ extern void loop(void) ;
 #include "OledDisplay.h"
 
 extern UARTClass Serial;
+extern UARTClass Serial1;
 extern OLEDDisplay Screen;
 #endif // __cplusplus
 
