@@ -21,7 +21,6 @@
  * UART objects
  */
 UARTClass Serial;
-UARTClass Serial1;
 
 /*
 * Screen objects

@@ -32,7 +32,8 @@
  * 
  */
 
-#pragma once
+#ifndef RPTYPES_H
+#define RPTYPES_H
 
 
 #ifdef _WIN32
@@ -114,3 +115,5 @@ typedef uint32_t u_result;
 #define IS_FAIL(x)  ( ((x) & RESULT_FAIL_BIT) )
 
 typedef _word_size_t (THREAD_PROC * thread_proc_t ) ( void * );
+
+#endif

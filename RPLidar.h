@@ -27,7 +27,8 @@
  *
  */
 
-#pragma once
+#ifndef RPLIDAR_H
+#define RPLIDAR_H
 
 #include "Arduino.h"
 #include "inc/rptypes.h"
@@ -91,3 +92,4 @@ protected:
     HardwareSerial * _bined_serialdev;  
     RPLidarMeasurement _currentMeasurement;
 };
+#endif
