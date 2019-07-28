@@ -4,6 +4,7 @@
 #include "SystemTickCounter.h"
 #include "wiring.h"
 #include "Serial.h"
+#include <string.h>
 #include <time.h>
 
 
@@ -43,6 +44,11 @@ Ticker sensors_read;
 Timer lidar_timer;
 
 int lidar_time;
+
+char* id_string;
+char* device_id_string;
+char* payload_string;
+char* correlation_id_string;
 
 /* Global functions */
 void lidar_time_read(void);
@@ -102,21 +108,7 @@ void loop() {
   #if LIDAR_ON
     run_lidar(lidar);
   #endif
-
-
-  if (tele_tab.count == 12){
-    calc_average(&t_data, &tele_tab);
-    /* For testing purposes */
-    Serial.printf("---------- New Output ----------------\n");
-    Serial.printf("Lidar timer read : %d\n", lidar_time);
-
-    Serial.printf("%.2f Celsius\n", t_data.temperature);
-    Serial.printf("%.2f %% humidity\n",t_data.humidity);
-    Serial.printf("%.2f Pa\n", t_data.pressure);
-    Serial.printf("Magnetic field: x %d, y %d, z %d\n", t_data.mag_field.x, t_data.mag_field.y,t_data.mag_field.z);
-
-    /* End testing */
-    if (hasIoTHub && hasWifi)
+  if (hasIoTHub && hasWifi)
       {
         uint8_t buff[1280];
         size_t msg_length;
@@ -127,20 +119,23 @@ void loop() {
         pb_callback_t id;
         pb_callback_t device_id;
         pb_callback_t payload;
+        pb_callback_t correlation_id;
 
-        char* id_string = "5d2b572f3dd05300015cad67";
-        char* device_id_string = "ele400-equipe4";
-        char* payload_string = "5";
+        strcpy(id_string,"5d2b572f3dd05300015cad67");
+        strcpy(device_id_string,"ele400-equipe4");
+        strcpy(payload_string,"5");
+        strcpy(correlation_id_string, "anythingoes");
 
         id.arg = id_string;
         device_id.arg = device_id_string;
         payload.arg = payload_string;
-
+        correlation_id.arg = correlation_id_string;
 
         msg_telemetry.id = id;
         msg_telemetry.deviceId = device_id;
         msg_telemetry.deviceTime = millis();
         msg_telemetry.version = 1;
+        msg_telemetry.correlationId = correlation_id;
         msg_telemetry.commandId;
         msg_telemetry.payload = payload;
 
@@ -163,6 +158,17 @@ void loop() {
         // delay(2000);
       }
 
+  if (tele_tab.count == 12){
+    calc_average(&t_data, &tele_tab);
+    /* For testing purposes */
+    Serial.printf("---------- New Output ----------------\n");
+    Serial.printf("Lidar timer read : %d\n", lidar_time);
+
+    Serial.printf("%.2f Celsius\n", t_data.temperature);
+    Serial.printf("%.2f %% humidity\n",t_data.humidity);
+    Serial.printf("%.2f Pa\n", t_data.pressure);
+    Serial.printf("Magnetic field: x %d, y %d, z %d\n", t_data.mag_field.x, t_data.mag_field.y,t_data.mag_field.z);
+
 
     tele_tab = telemetry_init();
   }
@@ -177,6 +183,5 @@ void lidar_time_read(void){
 
 void read_all_sensors(void){
   Serial.printf("Lidar timer read : %d\n", lidar_time);
-  Screen.print(1,"Hello!");
   read_sensors(&tele_tab);
 }
