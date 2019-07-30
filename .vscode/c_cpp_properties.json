@@ -19,7 +19,9 @@
                 "${workspaceFolder}/AZ3166/hardware/stm32f4/1.6.2/system/mbed-os/targets/TARGET_STM/TARGET_STM32F4",
                 "${workspaceFolder}/AZ3166/hardware/stm32f4/1.6.2/system/mbed-os/hal",
                 "${workspaceFolder}/RPLidarDriver/**",
-                "${workspaceFolder}/AZ3166/hardware/stm32f4/1.6.2/system/mbed-az3166-driver/mico/include"
+                "${workspaceFolder}/AZ3166/hardware/stm32f4/1.6.2/system/mbed-az3166-driver/mico/include",
+                "/Users/Felix/Library/Arduino15/packages/AZ3166/hardware/stm32f4/1.6.2/**",
+                "/Users/Felix/Library/Arduino15/packages/AZ3166/tools/**"
             ],
             "forcedInclude": [
                 "C:\\Users\\carta\\AppData\\Local\\Arduino15\\packages\\AZ3166\\hardware\\stm32f4\\1.6.2\\cores\\arduino\\Arduino.h",

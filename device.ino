@@ -1,12 +1,15 @@
 #include <string.h>
 #include <time.h>
+
+#include "Arduino.h"
 #include "pins_arduino.h"
 
 #include "AZ3166WiFi.h"
 #include "AzureIotHub.h"
 #include "SystemTickCounter.h"
 #include "wiring.h"
-#include "Serial.h"
+#include "BufferedSerial.h"
+#include "PinNames.h"
 
 
 #include "protobuf_communication.h"
@@ -25,7 +28,6 @@ lidar_data_t lidar_data;
 // You need to create an driver instance
 RPLidar lidar;
 bool lidar_on = false;
-
 
 /* END LIDAR SET UP */
 
@@ -50,7 +52,7 @@ void (*lidar_time_read_ptr)(void) = &lidar_time_read;
 
 
 void setup() {
-
+  Serial.begin(115200);
   lidar_on = lidar.begin(Serial);
   pinMode(RPLIDAR_MOTOR, OUTPUT);
 
