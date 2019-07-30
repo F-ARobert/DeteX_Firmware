@@ -7,7 +7,7 @@
 #include <string.h>
 #include <time.h>
 
-
+#include "lidar.h"
 #include "timing_mngmt.h"
 #include "EventBase.pb.h"
 #include "LightControl.pb.h"
@@ -18,24 +18,19 @@
 /* DEFINES */
 #define LIDAR_ON 0
 
-#if LIDAR_ON
-/* LIDAR SET UP */
-
-#include "lidar.h"
-// You need to create an driver instance
-RPLidar lidar;
-
-
-/* END LIDAR SET UP */
-#endif
-
-static bool hasWifi = false;
-static bool hasIoTHub = false;
-
-
 /* Global variable ****************************/
 telemetry_table_t tele_tab;
 telemetry_data_t t_data;
+lidar_data_t lidar_data;
+
+/* LIDAR SET UP */
+// You need to create an driver instance
+RPLidar lidar;
+bool lidar_on = false;
+/* END LIDAR SET UP */
+
+static bool hasWifi = false;
+static bool hasIoTHub = false;
 
 /* Initialize tickers */
 Ticker lidar_send;
@@ -58,19 +53,13 @@ void read_all_sensors(void);
 void (*read_sensors_ptr)(void) = &read_all_sensors;
 void (*lidar_time_read_ptr)(void) = &lidar_time_read;
 
-#if LIDAR_ON
- 
-#endif
-
 
 void setup() {
 
-#if LIDAR_ON
-  lidar.begin(Serial);
-
+  lidar_on = lidar.begin(Serial);
   pinMode(RPLIDAR_MOTOR, OUTPUT);
-#endif
 
+  lidar_data = lidar_data_init();
 
   /* Sensor intialization */
   init_onboard_sensors();
@@ -105,58 +94,58 @@ void loop() {
   
 
 
-  #if LIDAR_ON
-    run_lidar(lidar);
-  #endif
-  if (hasIoTHub && hasWifi)
-      {
-        uint8_t buff[1280];
-        size_t msg_length;
-        bool status;
+  if (lidar_on){
+      run_lidar(lidar, lidar_data);
+  }
 
-        EventBase msg_telemetry = EventBase_init_zero;
+  if (hasIoTHub && hasWifi){
+    uint8_t buff[1280];
+    size_t msg_length;
+    bool status;
+
+    EventBase msg_telemetry = EventBase_init_zero;
       
-        pb_callback_t id;
-        pb_callback_t device_id;
-        pb_callback_t payload;
-        pb_callback_t correlation_id;
+    pb_callback_t id;
+    pb_callback_t device_id;
+    pb_callback_t payload;
+    pb_callback_t correlation_id;
 
-        strcpy(id_string,"5d2b572f3dd05300015cad67");
-        strcpy(device_id_string,"ele400-equipe4");
-        strcpy(payload_string,"5");
-        strcpy(correlation_id_string, "anythingoes");
+    strcpy(id_string,"5d2b572f3dd05300015cad67");
+    strcpy(device_id_string,"ele400-equipe4");
+    strcpy(payload_string,"5");
+    strcpy(correlation_id_string, "anythingoes");
 
-        id.arg = id_string;
-        device_id.arg = device_id_string;
-        payload.arg = payload_string;
-        correlation_id.arg = correlation_id_string;
+    id.arg = id_string;
+    device_id.arg = device_id_string;
+    payload.arg = payload_string;
+    correlation_id.arg = correlation_id_string;
 
-        msg_telemetry.id = id;
-        msg_telemetry.deviceId = device_id;
-        msg_telemetry.deviceTime = millis();
-        msg_telemetry.version = 1;
-        msg_telemetry.correlationId = correlation_id;
-        msg_telemetry.commandId;
-        msg_telemetry.payload = payload;
+    msg_telemetry.id = id;
+    msg_telemetry.deviceId = device_id;
+    msg_telemetry.deviceTime = millis();
+    msg_telemetry.version = 1;
+    msg_telemetry.correlationId = correlation_id;
+    msg_telemetry.commandId;
+    msg_telemetry.payload = payload;
 
-        pb_ostream_t stream = pb_ostream_from_buffer(buff,sizeof(buff));
+    pb_ostream_t stream = pb_ostream_from_buffer(buff,sizeof(buff));
 
-        status = pb_encode(&stream, EventBase_fields, &msg_telemetry);
-        msg_length = stream.bytes_written;
+    status = pb_encode(&stream, EventBase_fields, &msg_telemetry);
+    msg_length = stream.bytes_written;
 
-        // replace the following line with your data sent to Azure IoTHub
-        snprintf((char*)buff, msg_length, "{\"topic\":\"iot\"}");
+    // replace the following line with your data sent to Azure IoTHub
+    snprintf((char*)buff, msg_length, "{\"topic\":\"iot\"}");
         
-        if (DevKitMQTTClient_SendEvent((char*)buff))
-        {
-          Screen.print(1, "Sending...");
-        }
-        else
-        {
-          Screen.print(1, "Failure...");
-        }
-        // delay(2000);
-      }
+    if (DevKitMQTTClient_SendEvent((char*)buff))
+    {
+      Screen.print(1, "Sending...");
+    }
+    else
+    {
+      Screen.print(1, "Failure...");
+    }
+    // delay(2000);
+   }
 
   if (tele_tab.count == 12){
     calc_average(&t_data, &tele_tab);

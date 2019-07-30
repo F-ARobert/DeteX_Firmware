@@ -14,17 +14,24 @@ Made by DeteX
 uint8_t nombre_objet(float *tableau_complet, int size);
 
 //Set-up le premier tour
-float minDistance = 100000;
-float angleAtMinDist = 0;
-
-float tableau_complet_loop[POINT_TAB_COMPLET];
 int i_loop = 0;         //Devrait finir a 2000
-int nb_objet_loop = 0;
 int i_tab = 0;          //Doit s'arreter a POINT_TAB_COMPLET
+
+/* Lidar_data initialize ***************/
+lidar_data_t lidar_data_init(void){
+  lidar_data_t new_data;
+    
+  memset(new_data.angle, -1, POINT_TAB_COMPLET);
+  memset(new_data.distance, 0, POINT_TAB_COMPLET);
+  new_data.distance_min = 10000;
+  new_data.nombre_obj=0;
+
+  return new_data;
+}
 
 
 /* Run lidar *****************/
-void run_lidar(RPLidar lidar){
+void run_lidar(RPLidar lidar, lidar_data_t data){
     if (IS_OK(lidar.waitPoint()))
     {
       float distance = lidar.getCurrentPoint().distance;
@@ -34,39 +41,32 @@ void run_lidar(RPLidar lidar){
       //Si nous commençons un nouveau tour
       if (lidar.getCurrentPoint().startBit)
       {
-        nb_objet_loop = nombre_objet(tableau_complet_loop, (sizeof*tableau_complet_loop)*POINT_TAB_COMPLET);
-        //C'est ici que nous envoirons le proto
-        //Puis que nous afficherons la lumiere
-        //Proto -> nb_objet_loop, minDistance
-        //Retour-> lumières
-
+        data.nombre_obj = nombre_objet(data.distance, POINT_TAB_COMPLET);
 
         //et set up le prochain tour
         i_tab = 0; 
         i_loop = 0;
-        minDistance = 100000;
-        angleAtMinDist = 0;
       }
-      else
+      else // If startBit == 0 (not new loop)
       {
         //Si nous sommes dans notre plage angulaire
-        if (angle >= ANGLE_DEBUT && angle < ANGLE_FIN)
-        {
-          //Pour trouvé la plus petite distance (fournie)
-          if (distance > 0 && distance < minDistance)
-          {
-            minDistance = distance;
-            angleAtMinDist = angle;
-          }
-
-          //Mettre un point sur 5 dans le tableau
-          if (i_loop % 5 == 0)
-          {
-            tableau_complet_loop[i_tab] = distance;
-            i_tab++;
+        if (angle >= ANGLE_DEBUT && angle < ANGLE_FIN) {
             
-            if (POINT_TAB_COMPLET == i_tab) {
-                i_tab = 0;
+          //Mettre un point sur 5 dans le tableau
+          if (0 == (i_loop % 5)) {
+            data.distance[i_tab] = distance;
+            data.angle[i_tab] = angle;
+
+            //Pour trouvé la plus petite distance
+            if ((distance > 0) && (distance < data.distance_min))
+            {
+              data.distance_min = distance;
+            }
+
+            i_tab++;
+              
+            if (i_tab == POINT_TAB_COMPLET) {
+              i_tab = 0;
             }
           }
         }
