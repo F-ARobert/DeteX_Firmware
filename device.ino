@@ -91,9 +91,6 @@ void setup() {
 
 void loop() {
   // put your main code here, to run repeatedly:
-  
-
-
   if (lidar_on){
       run_lidar(lidar, lidar_data);
   }
