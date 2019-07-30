@@ -1,18 +1,16 @@
+#include <string.h>
+#include <time.h>
+#include "pins_arduino.h"
+
 #include "AZ3166WiFi.h"
-#include "DevKitMQTTClient.h"
 #include "AzureIotHub.h"
 #include "SystemTickCounter.h"
 #include "wiring.h"
 #include "Serial.h"
-#include <string.h>
-#include <time.h>
 
-#include "lidar.h"
-#include "timing_mngmt.h"
-#include "EventBase.pb.h"
-#include "LightControl.pb.h"
-#include "pb_encode.h"
-#include "pb_decode.h"
+
+#include "protobuf_communication.h"
+
 
 
 /* DEFINES */
@@ -27,6 +25,8 @@ lidar_data_t lidar_data;
 // You need to create an driver instance
 RPLidar lidar;
 bool lidar_on = false;
+
+
 /* END LIDAR SET UP */
 
 static bool hasWifi = false;
@@ -39,11 +39,6 @@ Ticker sensors_read;
 Timer lidar_timer;
 
 int lidar_time;
-
-char* id_string;
-char* device_id_string;
-char* payload_string;
-char* correlation_id_string;
 
 /* Global functions */
 void lidar_time_read(void);
@@ -96,52 +91,8 @@ void loop() {
   }
 
   if (hasIoTHub && hasWifi){
-    uint8_t buff[1280];
-    size_t msg_length;
-    bool status;
-
-    EventBase msg_telemetry = EventBase_init_zero;
-      
-    pb_callback_t id;
-    pb_callback_t device_id;
-    pb_callback_t payload;
-    pb_callback_t correlation_id;
-
-    strcpy(id_string,"5d2b572f3dd05300015cad67");
-    strcpy(device_id_string,"ele400-equipe4");
-    strcpy(payload_string,"5");
-    strcpy(correlation_id_string, "anythingoes");
-
-    id.arg = id_string;
-    device_id.arg = device_id_string;
-    payload.arg = payload_string;
-    correlation_id.arg = correlation_id_string;
-
-    msg_telemetry.id = id;
-    msg_telemetry.deviceId = device_id;
-    msg_telemetry.deviceTime = millis();
-    msg_telemetry.version = 1;
-    msg_telemetry.correlationId = correlation_id;
-    msg_telemetry.commandId;
-    msg_telemetry.payload = payload;
-
-    pb_ostream_t stream = pb_ostream_from_buffer(buff,sizeof(buff));
-
-    status = pb_encode(&stream, EventBase_fields, &msg_telemetry);
-    msg_length = stream.bytes_written;
-
-    // replace the following line with your data sent to Azure IoTHub
-    snprintf((char*)buff, msg_length, "{\"topic\":\"iot\"}");
-        
-    if (DevKitMQTTClient_SendEvent((char*)buff))
-    {
-      Screen.print(1, "Sending...");
-    }
-    else
-    {
-      Screen.print(1, "Failure...");
-    }
-    // delay(2000);
+    send_telemetry(t_data);
+    send_lidar(lidar_data);
    }
 
   if (tele_tab.count == 12){
