@@ -46,9 +46,11 @@ void run_lidar(RPLidar lidar, lidar_data_t data){
         //et set up le prochain tour
         i_tab = 0; 
         i_loop = 0;
+        data.startbit = true;
       }
       else // If startBit == 0 (not new loop)
       {
+        data.startbit = false;
         //Si nous sommes dans notre plage angulaire
         if (angle >= ANGLE_DEBUT && angle < ANGLE_FIN) {
             
@@ -75,7 +77,7 @@ void run_lidar(RPLidar lidar, lidar_data_t data){
     else
     {
       //Fourni
-      analogWrite(RPLIDAR_MOTOR, 0); //stop the rplidar motor
+      digitalWrite(PB_3, LOW); //stop the rplidar motor
 
       // try to detect RPLIDAR...
       rplidar_response_device_info_t info;
@@ -83,7 +85,7 @@ void run_lidar(RPLidar lidar, lidar_data_t data){
       {
         //detected...
         lidar.startScan();
-        analogWrite(RPLIDAR_MOTOR, 255);
+        digitalWrite(PB_3, HIGH);
         delay(1000);
       }
     }

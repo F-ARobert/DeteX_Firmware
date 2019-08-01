@@ -28,7 +28,7 @@ lidar_data_t lidar_data;
 // You need to create an driver instance
 RPLidar lidar;
 bool lidar_on = false;
-
+char* line1;
 /* END LIDAR SET UP */
 
 static bool hasWifi = false;
@@ -53,8 +53,10 @@ void (*lidar_time_read_ptr)(void) = &lidar_time_read;
 
 void setup() {
   Serial.begin(115200);
+  pinMode(PB_3, OUTPUT);
+  digitalWrite(PB_3,HIGH);
   lidar_on = lidar.begin(Serial);
-  pinMode(RPLIDAR_MOTOR, OUTPUT);
+  
 
   lidar_data = lidar_data_init();
 
@@ -88,27 +90,28 @@ void setup() {
 
 void loop() {
   // put your main code here, to run repeatedly:
+  Screen.clean();
+
   if (lidar_on){
-      run_lidar(lidar, lidar_data);
+    run_lidar(lidar, lidar_data);
+  } else {
+    Screen.print(1,"NO LIDAR");
   }
 
-  if (hasIoTHub && hasWifi){
+  if (lidar_data.startbit){
+    sprintf(line1, "%f mm",lidar_data.distance_min);
+    Screen.print(1,line1);
+  } else {
+    Screen.print(1,"NO DATA");
+  }
+
+/*  if (hasIoTHub && hasWifi){
     send_telemetry(t_data);
     send_lidar(lidar_data);
-   }
+   }*/
 
   if (tele_tab.count == 12){
     calc_average(&t_data, &tele_tab);
-    /* For testing purposes */
-    Serial.printf("---------- New Output ----------------\n");
-    Serial.printf("Lidar timer read : %d\n", lidar_time);
-
-    Serial.printf("%.2f Celsius\n", t_data.temperature);
-    Serial.printf("%.2f %% humidity\n",t_data.humidity);
-    Serial.printf("%.2f Pa\n", t_data.pressure);
-    Serial.printf("Magnetic field: x %d, y %d, z %d\n", t_data.mag_field.x, t_data.mag_field.y,t_data.mag_field.z);
-
-
     tele_tab = telemetry_init();
   }
 
@@ -121,6 +124,6 @@ void lidar_time_read(void){
 }
 
 void read_all_sensors(void){
-  Serial.printf("Lidar timer read : %d\n", lidar_time);
+ //Serial.printf("Lidar timer read : %d\n\r", lidar_time);
   read_sensors(&tele_tab);
 }

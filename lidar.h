@@ -24,7 +24,7 @@ Made by DeteX
 
 #define POINT_TAB_COMPLET 200
 
-#define RPLIDAR_MOTOR 9 // The PWM pin for control the speed of RPLIDAR's motor. 
+#define RPLIDAR_MOTOR 0 // The PWM pin for control the speed of RPLIDAR's motor. 
                         // This pin should connected with the RPLIDAR's MOTOCTRL signal
 
 /* Variables *************************/
@@ -33,6 +33,7 @@ typedef struct lidar_data {
     float angle[POINT_TAB_COMPLET];
     float distance_min;
     int nombre_obj;
+    bool startbit;
 }lidar_data_t;
 
 /*
