@@ -47,7 +47,7 @@ class RPLidar
 public:
     enum {
         RPLIDAR_SERIAL_BAUDRATE = 115200,  
-        RPLIDAR_DEFAULT_TIMEOUT = 500,
+        RPLIDAR_DEFAULT_TIMEOUT = 1000,
     };
     
     RPLidar();  

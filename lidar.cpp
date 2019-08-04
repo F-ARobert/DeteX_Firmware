@@ -13,10 +13,6 @@ Made by DeteX
 /* STATIC FUNCTIONALITIES */
 uint8_t nombre_objet(float *tableau_complet, int size);
 
-//Set-up le premier tour
-int i_loop = 0;         //Devrait finir a 2000
-int i_tab = 0;          //Doit s'arreter a POINT_TAB_COMPLET
-
 /* Lidar_data initialize ***************/
 lidar_data_t lidar_data_init(void){
   lidar_data_t new_data;
@@ -31,33 +27,37 @@ lidar_data_t lidar_data_init(void){
 
 
 /* Run lidar *****************/
-void run_lidar(RPLidar lidar, lidar_data_t data){
+void run_lidar(RPLidar lidar, lidar_data_t data, int* i_loop, int* i_tab){
     if (IS_OK(lidar.waitPoint()))
     {
+      char *test;
       float distance = lidar.getCurrentPoint().distance;
       float angle = lidar.getCurrentPoint().angle;
-      i_loop++;
-
+      *i_loop += 1;
+      //Screen.print(1,"lidar OK");
+      sprintf(test,"Obtained %.2f %.2f", distance, angle);
+      //Screen.print(1,test,true);
+      //delay(3000);
       //Si nous commençons un nouveau tour
       if (lidar.getCurrentPoint().startBit)
       {
-        data.nombre_obj = nombre_objet(data.distance, POINT_TAB_COMPLET);
-
-        //et set up le prochain tour
-        i_tab = 0; 
-        i_loop = 0;
         data.startbit = true;
+        data.nombre_obj = nombre_objet(data.distance, POINT_TAB_COMPLET);
+        
+        //et set up le prochain tour
+        *i_tab = 0; 
+        *i_loop = 0;
       }
       else // If startBit == 0 (not new loop)
       {
         data.startbit = false;
         //Si nous sommes dans notre plage angulaire
-        if (angle >= ANGLE_DEBUT && angle < ANGLE_FIN) {
+        if ((angle >= ANGLE_DEBUT) && (angle < ANGLE_FIN)) {
             
           //Mettre un point sur 5 dans le tableau
-          if (0 == (i_loop % 5)) {
-            data.distance[i_tab] = distance;
-            data.angle[i_tab] = angle;
+          if (0 == (*i_loop % 5)) {
+            data.distance[*i_tab] = distance;
+            data.angle[*i_tab] = angle;
 
             //Pour trouvé la plus petite distance
             if ((distance > 0) && (distance < data.distance_min))
@@ -65,10 +65,10 @@ void run_lidar(RPLidar lidar, lidar_data_t data){
               data.distance_min = distance;
             }
 
-            i_tab++;
+            *i_tab++;
               
-            if (i_tab == POINT_TAB_COMPLET) {
-              i_tab = 0;
+            if (*i_tab == POINT_TAB_COMPLET) {
+              *i_tab = 0;
             }
           }
         }
@@ -76,16 +76,18 @@ void run_lidar(RPLidar lidar, lidar_data_t data){
     }
     else
     {
+      //Screen.print(1,"No connect",true);
       //Fourni
-      digitalWrite(PB_3, LOW); //stop the rplidar motor
+      analogWrite(PB_3, 0); //stop the rplidar motor
 
       // try to detect RPLIDAR...
       rplidar_response_device_info_t info;
       if (IS_OK(lidar.getDeviceInfo(info, 100)))
       {
+        //Screen.print(1,"trying",true);
         //detected...
         lidar.startScan();
-        digitalWrite(PB_3, HIGH);
+        analogWrite(PB_3, 255);
         delay(1000);
       }
     }

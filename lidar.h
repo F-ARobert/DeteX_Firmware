@@ -48,5 +48,5 @@ lidar_data_t lidar_data_init(void);
 @Param: RPLidar type object
 @Return: none
  */
-void run_lidar(RPLidar lidar, lidar_data_t data);
+void run_lidar(RPLidar lidar, lidar_data_t data, int* i_loop, int* i_tab);
 #endif
