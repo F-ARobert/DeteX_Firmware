@@ -21,9 +21,11 @@
 #define LIDAR_ON 1
 #define DISPLAY_TELEMETRY 0
 
-#define PIN_GREEN 0
-#define PIN_YELLOW 1
-#define PIN_GREEN 2
+#define PIN_GREEN PC_13
+#define PIN_YELLOW PB_0
+#define PIN_RED PB_2
+
+enum {GREEN, YELLOW, RED};
 
 /* Global variable ****************************/
 telemetry_table_t tele_tab;
@@ -75,6 +77,11 @@ void setup() {
   lidar_data = lidar_data_init();
   #endif
 
+  /* Light pinout */
+  pinMode(PIN_GREEN,OUTPUT);
+  pinMode(PIN_YELLOW, OUTPUT);
+  pinMode(PIN_RED,OUTPUT);
+
   /* Sensor intialization */
   init_onboard_sensors();
   tele_tab = telemetry_init();
@@ -115,8 +122,24 @@ void loop() {
     Screen.print(1,"NO LIDAR",false);
   }
   #endif
-   
+  
 
+  // Logique des lumieres.
+  if((lidar_data.distance_min <= DISTANCE_ROUGE) && (10000 != lidar_data.distance_min)){
+    digitalWrite(PIN_RED,LOW);
+    digitalWrite(PIN_YELLOW,HIGH);
+    digitalWrite(PIN_GREEN,HIGH);
+  }
+  else if((lidar_data.distance_min <= DISTANCE_JAUNE) && (10000 != lidar_data.distance_min)){
+    digitalWrite(PIN_YELLOW,LOW);
+    digitalWrite(PIN_GREEN,HIGH);
+    digitalWrite(PIN_RED,HIGH);
+  }
+  else{
+    digitalWrite(PIN_GREEN,LOW);
+    digitalWrite(PIN_YELLOW,HIGH);
+    digitalWrite(PIN_RED,HIGH);
+  }
 
   
 /*  if (hasIoTHub && hasWifi){
