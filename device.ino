@@ -18,7 +18,12 @@
 
 
 /* DEFINES */
-#define LIDAR_ON 0
+#define LIDAR_ON 1
+#define DISPLAY_TELEMETRY 0
+
+#define PIN_GREEN 0
+#define PIN_YELLOW 1
+#define PIN_GREEN 2
 
 /* Global variable ****************************/
 telemetry_table_t tele_tab;
@@ -29,7 +34,10 @@ lidar_data_t lidar_data;
 // You need to create an driver instance
 RPLidar lidar;
 bool lidar_on = false;
-char* line1;
+char line1[20];
+char line2[20];
+char line3[20];
+char line4[20];
 //Set-up le premier tour
 int i_loop = 0;         //Devrait finir a 2000
 int i_tab = 0;          //Doit s'arreter a POINT_TAB_COMPLET
@@ -41,6 +49,7 @@ static bool hasIoTHub = false;
 /* Initialize tickers */
 Ticker lidar_send;
 Ticker sensors_read;
+Ticker lidar_show;
 
 Timer lidar_timer;
 int sensors_read_count;
@@ -49,10 +58,12 @@ int lidar_time;
 /* Global functions */
 void lidar_time_read(void);
 void read_all_sensors(void);
+void show_lidar_data(void);
 
 /* Assign function pointers */
 void (*read_sensors_ptr)(void) = &read_all_sensors;
 void (*lidar_time_read_ptr)(void) = &lidar_time_read;
+void (*lidar_show_ptr)(void) = &show_lidar_data;
 
 
 void setup() {
@@ -67,8 +78,7 @@ void setup() {
   /* Sensor intialization */
   init_onboard_sensors();
   tele_tab = telemetry_init();
-  Screen.print(1,"init ok",true);
-  delay(1500);
+
   if (WiFi.begin() == WL_CONNECTED)
   {
     hasWifi = true;
@@ -91,37 +101,49 @@ void setup() {
   //lidar_timer.start();
   //lidar_send.attach(lidar_time_read_ptr,0.1);
   sensors_read.attach(read_sensors_ptr,5.0);
+  lidar_show.attach(lidar_show_ptr,0.5);
   Screen.clean();
 }
 
 void loop() {
   // put your main code here, to run repeatedly:
+
   #if LIDAR_ON
   if (lidar_on){
-    run_lidar(lidar, lidar_data,&i_loop, &i_tab);
+    run_lidar(lidar, &lidar_data,&i_loop, &i_tab);
   } else {
-    Screen.print(1,"NO LIDAR");
+    Screen.print(1,"NO LIDAR",false);
   }
   #endif
+   
 
-  sprintf(line1, "sensors %d",sensors_read_count);
-  Screen.print(1,line1,true);
-  
-  #if LIDAR_ON
-  if (lidar_data.startbit){
-    
-  } else {
-    Screen.print(1,"NO DATA");
-  }
-  #endif
+
   
 /*  if (hasIoTHub && hasWifi){
     send_telemetry(t_data);
     send_lidar(lidar_data);
    }*/
 
+  
   if (tele_tab.count == 12){
     calc_average(&t_data, &tele_tab);
+    #if DISPLAY_TELEMETRY
+    Screen.Clean();
+    sprintf(line1,"%.2f C",t_data.temperature);
+    sprintf(line2,"%.2f %% H",t_data.humidity);
+    sprintf(line3,"%.2f Pa", t_data.pressure);
+    sprintf(line4,"x %3d, y %3d, z %3d", t_data.mag_field.x, t_data.mag_field.y,t_data.mag_field.z);
+
+    if (true == turn){
+      Screen.print(1,line1,false);
+      Screen.print(2,line2,false);
+      turn = !turn;
+    } else{
+      Screen.print(1,line3,false);
+      Screen.print(2,line4,true);
+      turn=!turn;
+    }
+  #endif
     tele_tab = telemetry_init();
   }
 
@@ -135,6 +157,25 @@ void lidar_time_read(void){
 }
 
 void read_all_sensors(void){
-  sensors_read_count++;
   read_sensors(&tele_tab);
+}
+
+void show_lidar_data(void){
+ #if LIDAR_ON
+  sprintf(line1, "%3.0f m", lidar_data.distance[i_tab]);
+  sprintf(line2, "%5.0f dist min", lidar_data.distance_min);
+  Screen.print(1, line1, true);
+  Screen.print(2, line2, true);
+  
+  // Logique des lumieres.
+  if((lidar_data.distance_min <= DISTANCE_ROUGE) && (10000 != lidar_data.distance_min)){
+    Screen.print(0,"RED",false);// turn on red light.
+  }
+  else if((lidar_data.distance_min <= DISTANCE_JAUNE) && (10000 != lidar_data.distance_min)){
+    Screen.print(0,"YELLOW",false); // turn on yellow light.
+  }
+  else{
+    Screen.print(0,"GREEN",false); // Turn on green light
+  }
+  #endif
 }

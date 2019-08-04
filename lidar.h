@@ -16,13 +16,14 @@ Made by DeteX
 
 /* DEFINES */
 
-#define ANGLE_DEBUT 180 //Debut de la couverture (en degrés)
-#define ANGLE_FIN 360 //Fin de la couverture
+#define ANGLE_DEBUT 200 //Debut de la couverture (en degrés)
+#define ANGLE_FIN 340 //Fin de la couverture
 
-#define DISTANCE_ROUGE 800 //en mm. 800 pour test, 1500 pour livraison
-#define DISTANCE_JAUNE 1200 //4000 pour livraison
+#define DISTANCE_ROUGE 500 //en mm. 800 pour test, 1500 pour livraison
+#define DISTANCE_JAUNE 1500 //4000 pour livraison
 
-#define POINT_TAB_COMPLET 200
+#define POINT_TAB_COMPLET 500
+#define TOP_QUALITY 15
 
 #define RPLIDAR_MOTOR 0 // The PWM pin for control the speed of RPLIDAR's motor. 
                         // This pin should connected with the RPLIDAR's MOTOCTRL signal
@@ -48,5 +49,5 @@ lidar_data_t lidar_data_init(void);
 @Param: RPLidar type object
 @Return: none
  */
-void run_lidar(RPLidar lidar, lidar_data_t data, int* i_loop, int* i_tab);
+void run_lidar(RPLidar lidar, lidar_data_t* data, int* i_loop, int* i_tab);
 #endif
