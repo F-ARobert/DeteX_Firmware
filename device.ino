@@ -13,19 +13,21 @@
 #include "Ticker.h"
 
 
-#include "protobuf_communication.h"
+#include "protobuf_communication.h" // non fonctionnel
 
 
 
 /* DEFINES */
 #define LIDAR_ON 1
-#define DISPLAY_TELEMETRY 0
+#define DISPLAY_TELEMETRY 1
+#define LIGHT_DEMONSTRATION 1
+#define INTERNAL_LIGHT_LOGIC 1
 
 #define PIN_GREEN PC_13
 #define PIN_YELLOW PB_0
 #define PIN_RED PB_2
 
-enum {GREEN, YELLOW, RED};
+//typedef enum {GREEN, YELLOW, RED};
 
 /* Global variable ****************************/
 telemetry_table_t tele_tab;
@@ -44,6 +46,7 @@ char line4[20];
 int i_loop = 0;         //Devrait finir a 2000
 int i_tab = 0;          //Doit s'arreter a POINT_TAB_COMPLET
 /* END LIDAR SET UP */
+uint8_t state = GREEN;
 
 static bool hasWifi = false;
 static bool hasIoTHub = false;
@@ -67,8 +70,11 @@ void (*read_sensors_ptr)(void) = &read_all_sensors;
 void (*lidar_time_read_ptr)(void) = &lidar_time_read;
 void (*lidar_show_ptr)(void) = &show_lidar_data;
 
+bool turn = false;
 
 void setup() {
+
+
   #if LIDAR_ON
   Serial.begin(115200);
   pinMode(PB_3, OUTPUT);
@@ -105,8 +111,8 @@ void setup() {
   }
 
   /* Set up iunterupts and timers */
-  //lidar_timer.start();
-  //lidar_send.attach(lidar_time_read_ptr,0.1);
+  lidar_timer.start();
+  lidar_send.attach(lidar_time_read_ptr,0.5);
   sensors_read.attach(read_sensors_ptr,5.0);
   lidar_show.attach(lidar_show_ptr,0.5);
   Screen.clean();
@@ -114,7 +120,6 @@ void setup() {
 
 void loop() {
   // put your main code here, to run repeatedly:
-
   #if LIDAR_ON
   if (lidar_on){
     run_lidar(lidar, &lidar_data,&i_loop, &i_tab);
@@ -123,23 +128,26 @@ void loop() {
   }
   #endif
   
+  #if LIGHT_DEMONSTRATION
 
-  // Logique des lumieres.
-  if((lidar_data.distance_min <= DISTANCE_ROUGE) && (10000 != lidar_data.distance_min)){
-    digitalWrite(PIN_RED,LOW);
-    digitalWrite(PIN_YELLOW,HIGH);
-    digitalWrite(PIN_GREEN,HIGH);
-  }
-  else if((lidar_data.distance_min <= DISTANCE_JAUNE) && (10000 != lidar_data.distance_min)){
-    digitalWrite(PIN_YELLOW,LOW);
-    digitalWrite(PIN_GREEN,HIGH);
-    digitalWrite(PIN_RED,HIGH);
-  }
-  else{
-    digitalWrite(PIN_GREEN,LOW);
-    digitalWrite(PIN_YELLOW,HIGH);
-    digitalWrite(PIN_RED,HIGH);
-  }
+    // Logique des lumieres.
+    if((lidar_data.state == RED) && (DEFAULT_MIN_DIST != lidar_data.distance_min)){
+      digitalWrite(PIN_RED,HIGH);
+      digitalWrite(PIN_YELLOW,LOW);
+      digitalWrite(PIN_GREEN,LOW);
+    }
+    else if((lidar_data.state == YELLOW) && (DEFAULT_MIN_DIST != lidar_data.distance_min)){
+      digitalWrite(PIN_YELLOW,HIGH);
+      digitalWrite(PIN_GREEN,LOW);
+      digitalWrite(PIN_RED,LOW);
+    }
+    else if(lidar_data.state == GREEN){
+      digitalWrite(PIN_GREEN,HIGH);
+      digitalWrite(PIN_YELLOW,LOW);
+      digitalWrite(PIN_RED,LOW);
+    }
+    
+  #endif
 
   
 /*  if (hasIoTHub && hasWifi){
@@ -151,7 +159,7 @@ void loop() {
   if (tele_tab.count == 12){
     calc_average(&t_data, &tele_tab);
     #if DISPLAY_TELEMETRY
-    Screen.Clean();
+    Screen.clean();
     sprintf(line1,"%.2f C",t_data.temperature);
     sprintf(line2,"%.2f %% H",t_data.humidity);
     sprintf(line3,"%.2f Pa", t_data.pressure);
@@ -172,9 +180,20 @@ void loop() {
 
 }
 
-/********* TO PUT UN SEPERATE HEADER FILE ********************/
+/********* operating functions: should be in seperate header file ********************/
 void lidar_time_read(void){
   lidar_time = lidar_timer.read_ms();
+  /* if (turn){
+    digitalWrite(PIN_RED,HIGH);
+    digitalWrite(PIN_YELLOW,LOW);
+    turn = !turn;
+  }else{
+    digitalWrite(PIN_RED,LOW);
+    digitalWrite(PIN_YELLOW,HIGH);
+    turn = !turn;
+  }*/
+  send_lidar(lidar_data);
+
   //Serial.printf("Lidar timer read %d",lidar_time);
   lidar_timer.reset();
 }
@@ -185,16 +204,20 @@ void read_all_sensors(void){
 
 void show_lidar_data(void){
  #if LIDAR_ON
-  sprintf(line1, "%3.0f m", lidar_data.distance[i_tab]);
-  sprintf(line2, "%5.0f dist min", lidar_data.distance_min);
+  
+  sprintf(line1, "%3.0f mm", lidar_data.distance[i_tab]);
+  sprintf(line2, "%3.0f dist min", lidar_data.distance_min);
+  //sprintf(line3, "%2.0u obj. detect.", lidar_data.nombre_obj);
+
   Screen.print(1, line1, true);
   Screen.print(2, line2, true);
+  //Screen.print(3, line3, true);
   
-  // Logique des lumieres.
-  if((lidar_data.distance_min <= DISTANCE_ROUGE) && (10000 != lidar_data.distance_min)){
+  // Logique interne des lumieres.
+  if((lidar_data.state == RED) && (DEFAULT_MIN_DIST != lidar_data.distance_min)){
     Screen.print(0,"RED",false);// turn on red light.
   }
-  else if((lidar_data.distance_min <= DISTANCE_JAUNE) && (10000 != lidar_data.distance_min)){
+  else if((lidar_data.state == YELLOW) && (DEFAULT_MIN_DIST != lidar_data.distance_min)){
     Screen.print(0,"YELLOW",false); // turn on yellow light.
   }
   else{

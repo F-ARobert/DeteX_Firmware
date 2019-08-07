@@ -16,17 +16,21 @@ Made by DeteX
 
 /* DEFINES */
 
-#define ANGLE_DEBUT 200 //Debut de la couverture (en degrés)
-#define ANGLE_FIN 340 //Fin de la couverture
+#define ANGLE_DEBUT 225 //Debut de la couverture (en degrés)
+#define ANGLE_FIN 315 //Fin de la couverture
 
-#define DISTANCE_ROUGE 500 //en mm. 800 pour test, 1500 pour livraison
-#define DISTANCE_JAUNE 1500 //4000 pour livraison
+#define DISTANCE_ROUGE 1000 //en mm.  pour test, 1500 pour livraison
+#define DISTANCE_JAUNE 2500 //4000 pour livraison
+#define DEFAULT_MIN_DIST DISTANCE_JAUNE
+#define LIMITE_ZONE 4000
 
 #define POINT_TAB_COMPLET 500
-#define TOP_QUALITY 15
+#define MINIMUM_QUALITY 14
 
 #define RPLIDAR_MOTOR 0 // The PWM pin for control the speed of RPLIDAR's motor. 
                         // This pin should connected with the RPLIDAR's MOTOCTRL signal
+
+enum {GREEN, YELLOW, RED, NONE};
 
 /* Variables *************************/
 typedef struct lidar_data {
@@ -34,6 +38,7 @@ typedef struct lidar_data {
     float angle[POINT_TAB_COMPLET];
     float distance_min;
     int nombre_obj;
+    uint8_t state;
     bool startbit;
 }lidar_data_t;
 

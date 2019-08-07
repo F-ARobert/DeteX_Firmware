@@ -13,6 +13,10 @@ Made by DeteX
 /* STATIC FUNCTIONALITIES */
 uint8_t nombre_objet(float *tableau_complet, int size);
 static float dist_min;
+static int red_counter = 0;
+static int yellow_counter = 0;
+static int green_counter = 0;
+
 
 /* Lidar_data initialize ***************/
 lidar_data_t lidar_data_init(void){
@@ -20,8 +24,10 @@ lidar_data_t lidar_data_init(void){
     
   memset(new_data.angle, -1, POINT_TAB_COMPLET);
   memset(new_data.distance, 0, POINT_TAB_COMPLET);
-  new_data.distance_min = 10000;
+  new_data.distance_min = DEFAULT_MIN_DIST;
   new_data.nombre_obj=0;
+  new_data.state = NONE;
+  new_data.startbit = false;
 
   return new_data;
 }
@@ -31,15 +37,11 @@ lidar_data_t lidar_data_init(void){
 void run_lidar(RPLidar lidar, lidar_data_t* data, int* i_loop, int* i_tab){
     if (IS_OK(lidar.waitPoint()))
     {
-      char test[20];
       float distance = lidar.getCurrentPoint().distance;
       float angle = lidar.getCurrentPoint().angle;
       uint8_t quality = lidar.getCurrentPoint().quality;
       *i_loop += 1;
-      //Screen.print(1,"lidar OK");
-      /*sprintf(test,"Obtained %.2f %.2f", distance, angle);
-      Screen.print(1,test,true);
-      delay(1000);*/
+
       //Si nous commençons un nouveau tour
       if (lidar.getCurrentPoint().startBit)
       {
@@ -47,28 +49,58 @@ void run_lidar(RPLidar lidar, lidar_data_t* data, int* i_loop, int* i_tab){
         data->startbit = true;
         data->nombre_obj = nombre_objet(data->distance, POINT_TAB_COMPLET);
         
+        if (data->distance_min <= DISTANCE_ROUGE) {
+          ++red_counter;
+          yellow_counter = 0;
+          green_counter = 0;
+
+          if (3 == red_counter){
+            data->state = RED;
+            red_counter = 0;
+          }
+
+        } else if (data->distance_min < DISTANCE_JAUNE){
+          ++yellow_counter;
+          red_counter = 0;
+          green_counter = 0;
+
+          data->state = YELLOW;
+          yellow_counter = 0;
+
+        } else {
+          ++green_counter;
+          red_counter = 0;
+          yellow_counter = 0;
+
+          if (20 == green_counter){
+            data->state = GREEN;
+            green_counter = 0;
+          }
+        }
+        
         //et set up le prochain tour
         *i_tab = 0; 
         *i_loop = 0;
-        dist_min = 10000;
+        dist_min = DEFAULT_MIN_DIST;
       }
       else // If startBit == 0 (not new loop)
       {
         data->startbit = false;
         //Si nous sommes dans notre plage angulaire
-        if ((angle >= ANGLE_DEBUT) && (angle < ANGLE_FIN) && (TOP_QUALITY == quality)) {
+        if ((angle >= ANGLE_DEBUT) && (angle < ANGLE_FIN) && (MINIMUM_QUALITY < quality)) {
           //Pour trouvé la plus petite distance
           if ((distance > 0) && (distance < data->distance_min))
           {
             dist_min = distance;
           }
           //Mettre un point sur 5 dans le tableau
-          //if (0 == (*i_loop % 5)) {
-            data->distance[*i_tab] = distance;
-            data->angle[*i_tab] = angle;
+          data->distance[*i_tab] = distance;
+          data->angle[*i_tab] = angle;
+          ++*i_tab;
 
-            *i_tab++;
-          //}
+          if(POINT_TAB_COMPLET == *i_tab){
+            *i_tab = 0;
+          }
         }
       }
     }
@@ -103,18 +135,15 @@ uint8_t nombre_objet(float *tableau_complet, int size)
 
   for (int i = 0; i <= size; i++)
   {
-    if (etat == 0 && tableau_complet[i] < DISTANCE_JAUNE)
+    if ((etat == 0) && (tableau_complet[i] < LIMITE_ZONE))
     {
       nb_objet++;
       etat = 1;
-      //Si un tableau d'objets existe, c'est ici qu'on le remplis
-    }
-
-    if (etat == 1 && tableau_complet[i] > DISTANCE_JAUNE)
+    } 
+    else if((etat == 1) && (tableau_complet[i] > LIMITE_ZONE))
     {
       etat = 0;
     }
   }
-
   return nb_objet;
 }
